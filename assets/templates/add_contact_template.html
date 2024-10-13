@@ -1,0 +1,44 @@
+<div class="contact-overlay-container">
+    <div class="contact-overlay-box">
+        <div class="contact-overlay-container-section">
+            <div class="contact-overlay-section">
+                <div onclick="closeContactOverlay()" class="close-form-mobile">
+                    <img src="assets/img/contact_close_mobile.png" alt="">
+                </div>
+                <div class="overlay-text-container">
+                    <img class="contact-overlay-logo" src="assets/img/join_small.png" alt="">
+                    <div class="contact-overlay-headline">Add contact</div>
+                    <div class="contact-overlay-subheadline">Tasks are better with a team</div>
+                    <div class="contact-overlay-divider"></div>
+                </div>
+            </div>
+            <div class="contact-overlay-form-section">
+                <div onclick="closeContactOverlay()" class="close-form"><img src="assets/img/contact_close_form.png"
+                        alt=""></div>
+                <div class="contact-overlay-form-box">
+                    <div class="contact-overlay-icon-box"><img class="contact-overlay-icon"
+                            src="assets/img/contact_user_white.png" alt=""></div>
+                    <form class="contact-form-container">
+                        <input id="newContactName" required type="text" placeholder="Name" style="color: rgb(0,0,0)"
+                            class="contact-overlay-name">
+                        <input id="newContactEmail" required type="email" placeholder="Email" style="color: rgb(0,0,0)"
+                            class="contact-overlay-email">
+                        <input id="newContactPhone" required type="tel" placeholder="Phone" style="color: rgb(0,0,0)"
+                            class="contact-overlay-phone">
+                    </form>
+                </div>
+                <div class="contact-overlay-buttons">
+                    <button class="contact-cancel-button" onclick="closeContactOverlay()">
+                        <div>Cancel</div>
+                        <img src="assets/img/contact_form_cancel.png" alt="">
+                    </button>
+                    <button onclick="event.preventDefault(); if (validateForm()) { addContact(); }"
+                        class="contact-create-button">
+                        <div>Create contact</div>
+                        <img src="assets/img/contact_form_check.png" alt="">
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

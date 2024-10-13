@@ -1,0 +1,54 @@
+.help-container,
+.legal-notice-container {
+    padding-left: 60px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-right: 60px;
+    font-size: 16px;
+    max-width: 1080px;
+}
+
+.headline {
+    margin: 0;
+    font-size: 40px;
+    font-weight: 700;
+}
+
+.subline {
+    padding-top: 40px;
+}
+
+td {
+    padding-bottom: 30px;
+}
+
+td:first-child {
+    font-size: 40px;
+    font-weight: 700;
+    padding-right: 30px;
+}
+
+
+@media(max-width: 900px) {
+    
+    .help-container,
+    .legal-notice-container {
+        padding-left: 5.613vw;
+        padding-top: 30px;
+        padding-right: 5.613vw;
+    }
+}
+
+
+@media(max-width: 320px) {
+    
+    .help-container,
+    .legal-notice-container {
+        font-size: 14px;
+    }
+
+    td:first-child {
+        font-size: 35px;
+        padding-right: 10px;
+    }
+}

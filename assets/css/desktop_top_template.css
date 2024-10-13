@@ -1,0 +1,126 @@
+.display-none-desktop {
+    display: none;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.header {
+    /* width: 100%; */
+    height: 75px;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2
+}
+
+.header-position {
+    position: fixed;
+    top: 0;
+    left: 200px;
+    right: 0;
+}
+
+.header span {
+    padding-left: 100px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.user-info {
+    width: 95px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 36px;
+}
+
+.help {
+    cursor: pointer;
+    height: 30px;
+}
+
+.user-initials {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2.8px rgb(44, 54, 70);
+    cursor: pointer;
+    height: 40px;
+    width: 40px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.user-menu {
+    position: fixed;
+    top: 75px;
+    right: 35px;
+    padding: 10px;
+    border-radius: 10px 0px 10px 10px;
+    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.10);
+    background: rgb(44, 54, 70);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.user-menu a {
+    text-decoration: none;
+    color: rgb(205, 205, 205);
+    font-size: 16px;
+    padding: 8px;
+}
+
+
+@media(max-width: 900px) {
+
+    .display-none-responsiv-900 {
+        display: none !important;
+    }
+
+    .display-none-desktop {
+        display: block;
+    }
+
+    .header-position {
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .side-logo-dark {
+        height: 40px;
+        padding-left: 25px;
+    }
+
+    .header span {
+        padding-left: 0px;
+    }
+
+    .user-info {
+        padding-right: 25px;
+    }
+
+    .user-menu {
+        right: 25px;
+    }
+}
+
+@media(max-width: 700px) {
+
+    .display-none-responsiv {
+        display: none !important;
+    }
+
+    .user-info {
+        width: 44px;
+        padding-right: 18px;
+    }
+}

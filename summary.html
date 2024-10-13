@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/img/join_small.png">
+
+    <script src="script.js"></script>
+    <script src="assets/js/include.js"></script>
+    <script src="assets/js/summary.js"></script>
+
+    <link rel="stylesheet" href="assets/css/desktop_top_template.css">
+    <link rel="stylesheet" href="assets/css/desktop_side_menu_template.css">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/summary.css">
+
+    <title>Join</title>
+</head>
+
+<body onload="initSummary()">
+    <div w3-include-html="assets/templates/desktop_side_menu_template.html"></div>
+    <div class="column-content">
+        <div w3-include-html="assets/templates/desktop_top_template.html"></div>
+        <div class="content-alignment">
+            <div class="summary-container">
+                <div id="headerContainer" class="header-container">
+                    <span class="mobile-header">Kanban Project Management Tool</span>
+                    <h1>Summary</h1>
+                    <Span>Everything in a nutshell!</Span>
+                    <div class="blue-line"></div>
+                </div>
+
+                <main id="main">
+                    <div id="mainLeftContainer" class="main-left-container">
+                        <div class="tasks-top-row">
+                            <a href="board.html">
+                                <div><b id="tasksInBoard">4</b>Tasks in <br> Board</div>
+                            </a>
+                            <a href="board.html">
+                                <div><b id="tasksInProgress">2</b>Tasks in <br> Progress</div>
+                            </a>
+                            <a href="board.html" style="margin-right: 0;">
+                                <div><b id="awaitingFeedback">2</b>Awaiting <br> Feedback</div>
+                            </a>
+                        </div>
+                        <a href="board.html">
+                            <div class="tasks-middle-row">
+                                <div class="tasks-middle-row-left"><img src="assets/img/urgent.png">
+                                    <div><b id="urgent">1</b>Urgent</div>
+                                </div>
+                                <div class="tasks-middle-row-right"><b id="upcomingDeadline">October 16, 2022</b>
+                                    Upcoming Deadline</div>
+                            </div>
+                        </a>
+                        <div class="tasks-bottom-row">
+                            <a href="board.html" class="todo-done">
+                                <div class="todo-done-inner-container" onmouseover="addHoverEffect('todoPicture')"
+                                    onmouseout="removeHoverEffect('todoPicture')">
+                                    <img id="todoPicture" src="assets/img/pen.png">
+                                    <div><b id="todo">1</b>To-do</div>
+                                </div>
+                            </a>
+                            <a href="board.html" class="todo-done" style="margin-right: 0;">
+                                <div class="todo-done-inner-container" onmouseover="addHoverEffect('donePicture')"
+                                    onmouseout="removeHoverEffect('donePicture')">
+                                    <img id="donePicture" src="assets/img/tick.png">
+                                    <div><b id="done">1</b>Done</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="mainRightContainer" class="main-right-container">
+                        <b id="greeting">Good morning,</b>
+                        <span id="nameOfUser">Sofia Müller</span>
+                    </div>
+                </main>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

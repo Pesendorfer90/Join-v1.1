@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/img/join_small.png">
+
+    <script src="script.js"></script>
+    <script src="assets/js/include.js"></script>
+    <script src="assets/js/contacts.js"></script>
+    <script src="assets/js/contactsTemplates.js"></script>
+
+
+    <link rel="stylesheet" href="assets/css/desktop_top_template.css">
+    <link rel="stylesheet" href="assets/css/desktop_side_menu_template.css">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/contacts.css">
+    <link rel="stylesheet" href="assets/css/contact-mobile.css">
+
+    <title>Join</title>
+</head>
+
+<body onload="initContact()">
+    <div w3-include-html="assets/templates/desktop_side_menu_template.html"></div>
+    <div class="column-content">
+        <div w3-include-html="assets/templates/desktop_top_template.html"></div>
+        <div class="content-alignment">
+            <div class="mobile-contact-button-container" id="mobile-contact-button-container">
+                <div class="mobile-user-contact-button" id="addUser" onclick="openNewContactForm()">
+                    New contact
+                    <img src="assets/img/contact_user.png" alt="">
+                </div>
+            </div>
+
+            <div class="contacts-section" id="contacts-section">
+                <!--Kontakt-Liste-->
+                <div id="contact-list" class="contact-list"></div>
+
+                <!--Detail-Ansicht-->
+                <div id="contacts-container" class="contacts-container">
+                    <div id="contact-kanban" class="contact-kanban">Kanban Project Management Tool</div>
+                    <!-- <div id="arrow-container" class="arrow-container"> -->
+                    <img id="contact-left-arrow" onclick="closeMobileVersion()" class="contact-left-arrow "
+                        src="assets/img/contact_arrow_blue.png" alt="">
+                    <!-- </div> -->
+                    <div class="contacts-header" id="headline">
+                        <h1 class="contacts-headline">Contacts</h1>
+                        <div class="contacts-divider"> </div>
+                        <div class="contacts-headline-small">Better with a team </div>
+                    </div>
+                    <!--Detail-User-->
+                    <div id="selectedContact" class="selected-contact"></div>
+
+                    <div class="user-contact-button button-hover" id="user-contact-button"
+                        onclick="openNewContactForm()">
+                        New contact
+                        <img src="assets/img/contact_user.png" alt="">
+                    </div>
+
+                </div>
+                <div class="overlay-section" id="overlaySection"></div>
+                <div class="overlay-section" id="editContact"></div>
+
+
+            </div>
+        </div>
+</body>
+
+</html>

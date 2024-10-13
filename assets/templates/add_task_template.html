@@ -1,0 +1,144 @@
+<!-- 
+<img class="board-close-icon board-cursor-pointer" onclick="boardHideAddtaskOverlay()"
+src="./assets/img/board/close.svg" alt="close-icon">
+
+<img class="board-close-arrow board-cursor-pointer" onclick="boardHideAddtaskOverlay()"
+src="./assets/img/board/arrow-left-line.svg" alt="">
+
+<div class="task-display-none-desktop create-button-top">
+    <button onclick="collectAllInfos(); boardHideAddtaskOverlay()" id="mobileCreateTask" class="create-task-top spcae-evenly">
+        Create
+        <img src="assets/img/create_task.png">
+    </button>
+</div> -->
+<div class="add-task-container add-task-container-overlay">
+
+    <div class="task-headline">
+        <span>Add Task</span>
+    </div>
+    <div class="task-input-section">
+        <div class="task-main-inforamtion">
+            <div class="padding-36-bottom">
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Title</div>
+                    <div id="titleReport" class="report d-none">This field is required</div>
+                </div>
+                <input type="text" placeholder="Enter a title" class="task-white-box no-outline" id="tileInput">
+
+            </div>
+
+            <div class="padding-36-bottom">
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Description</div>
+                    <div id="descriptionReport" class="report d-none">This field is required</div>
+                </div>
+                <textarea name="description" placeholder="Enter a description"
+                    class="textarea-description no-outline" id="descriptionInput"></textarea>
+            </div>
+
+            <div class="padding-36-bottom">
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Category</div>
+                    <div id="categoryReport" class="report d-none">This field is required</div>
+                </div>
+                <div class="dropdown-category-closed" id="category">
+                    <div id="categoryPlaceholder" class="dd-placeholder"
+                        onclick="pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts')">
+                        <div id="chosenCategory">Select task category</div>
+                        <img src="assets/img/drop_down.png">
+                    </div>
+                    <div class="d-none task-more-content overflow-auto" id="moreCategorys">
+                        <div onclick="openCreateCategory()" class="dd-placeholder gray-hover">
+                            <div>New category</div>
+                        </div>
+                        <div id="loadedCategorys"></div>
+                    </div>
+                </div>
+
+                <div id="newCategoryContainer" class="d-none task-white-box task-subtask-container">
+                    <input type="text" placeholder="New category name" id="categoryInput"
+                        class="input-cat-sub no-outline">
+                    <div class="center spcae-between clear-add-button-container padding-17-right" id="#">
+                        <img class="clear-input pointer" onclick="closeCreateCategory()"
+                            src="assets\img\Clear_task_input.png">
+                        <div>|</div>
+                        <img onclick="addCategory()" class="pointer" src="assets\img\create_subtask.png">
+                    </div>
+                </div>
+
+                <div id="color-picker" class="align-center padding-15-top d-none">
+                    <div class="task-category-color margin-20-right" id="colorPickCircle0"></div>
+                    <div class="task-category-color margin-20-right" id="colorPickCircle1"></div>
+                    <div class="task-category-color margin-20-right" id="colorPickCircle2"></div>
+                    <div class="task-category-color margin-20-right" id="colorPickCircle3"></div>
+                    <div class="task-category-color margin-20-right" id="colorPickCircle4"></div>
+                    <div class="task-category-color margin-20-right" id="colorPickCircle5"></div>
+                </div>
+            </div>
+
+
+            <div id="board-add-task-assignee-picker">
+            </div>
+
+
+    
+        </div>
+
+        <div class="second-inforamtion">
+            <div class="padding-36-bottom">
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Due date</div>
+                    <div id="dateReport" class="report d-none">This field is required</div>
+                </div>
+                <input type="text" placeholder="dd/mm/yyyy" id="date" class="task-white-box no-outline">
+            </div>
+
+            <div class="padding-36-bottom">
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Prio</div>
+                    <div id="prioReport" class="report d-none">This field is required</div>
+                </div>
+                <div class="task-prio-container">
+                    <button class="task-prio-button center pointer spcae-evenly"
+                        onclick="priority('prioHigh', 'prioHighImg')" id="prioHigh">
+                        <div>Urgent</div>
+                        <img id="prioHighImg" src="assets/img/prio_high.svg">
+                    </button>
+                    <button class="task-prio-button center  spcae-evenly"
+                        onclick="priority('prioMedium', 'prioMediumImg')"
+                        id="prioMedium">
+                        <div>Medium</div>
+                        <img id="prioMediumImg" src="assets/img/prio_medium.svg">
+                    </button>
+                    <button class="task-prio-button center pointer spcae-evenly"
+                        onclick="priority('prioLow', 'prioLowImg')" id="prioLow">
+                        <div>Low</div>
+                        <img id="prioLowImg" src="assets/img/prio_low.svg">
+                    </button>
+                </div>
+            </div>
+
+            <div id="board-add-task-subtasks">
+            </div>              
+        </div>
+    </div>
+
+    <div class="task-buttons task-display-none-responsiv">
+        <button onclick="clearAllFields()" id="clearButton" class="clear-task spcae-evenly">
+            Clear
+            <img id="clearButtonImg" src="assets\img\Clear_task-new.svg">
+        </button>
+        <button onclick="collectAllInfos(); boardHideAddtaskOverlay()" id="desktopCreateTask"
+            class="create-task create-hover spcae-evenly">
+            Create Task
+            <img src="assets/img/create_task.png">
+        </button>
+    </div>
+    <div class="overlay-section" id="overlaySection"></div>
+</div>
+<!-- <div id="addetToBoard" class="addet-to-board-position">
+    <div class="addet-to-board">
+        Task addet to board
+        <img class="addet-to-board-img" src="assets\img\board.png">
+    </div>
+</div> -->

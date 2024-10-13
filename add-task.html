@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="assets/img/join_small.png">
+
+    <script src="assets\node_modules\js-datepicker\dist\datepicker.min.js"></script>
+    <script src="script.js"></script>
+    <script src="assets/js/add-task.js"></script>
+    <script src="assets/js/include.js"></script>
+    <script src="assets/js/contacts.js"></script>
+    <script src="assets/js/contactsTemplates.js"></script>
+
+    <link rel="stylesheet" href="assets/css/desktop_top_template.css">
+    <link rel="stylesheet" href="assets/css/desktop_side_menu_template.css">
+    <link rel="stylesheet" href="assets/fonts/fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/add-task.css">
+    <link rel="stylesheet" href="assets\node_modules\js-datepicker\dist\datepicker.min.css">
+    <link rel="stylesheet" href="assets/css/contacts.css">
+    <link rel="stylesheet" href="assets/css/contact-mobile.css">
+
+    <title>Join</title>
+</head>
+
+<body onload="initTask()">
+    <div w3-include-html="assets/templates/desktop_side_menu_template.html"></div>
+    <div class="column-content">
+        <div w3-include-html="assets/templates/desktop_top_template.html"></div>
+        <div class="task-display-none-desktop create-button-top">
+            <button onclick="collectAllInfos()" id="mobileCreateTask" class="create-task-top spcae-evenly">
+                Create
+                <img src="assets/img/create_task.png">
+            </button>
+        </div>
+        <div class="add-task-container content-alignment">
+            <div class="task-display-none-desktop padding-36-bottom">
+                Kanban Project Management Tool
+            </div>
+            <div class="task-headline">
+                <span>Add Task</span>
+            </div>
+            <div class="task-input-section">
+                <div class="task-main-inforamtion">
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Title</div>
+                            <div id="titleReport" class="report d-none">This field is required</div>
+                        </div>
+                        <input type="text" placeholder="Enter a title" class="task-white-box no-outline" id="tileInput">
+
+                    </div>
+
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Description</div>
+                            <div id="descriptionReport" class="report d-none">This field is required</div>
+                        </div>
+                        <textarea name="description" placeholder="Enter a description"
+                            class="textarea-description no-outline" id="descriptionInput"></textarea>
+                    </div>
+
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Category</div>
+                            <div id="categoryReport" class="report d-none">This field is required</div>
+                        </div>
+                        <div class="dropdown-category-closed" id="category">
+                            <div id="categoryPlaceholder" class="dd-placeholder"
+                                onclick="pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts')">
+                                <div id="chosenCategory">Select task category</div>
+                                <img src="assets/img/drop_down.png">
+                            </div>
+                            <div class="d-none task-more-content overflow-auto" id="moreCategorys">
+                                <div onclick="openCreateCategory()" class="dd-placeholder gray-hover">
+                                    <div>New category</div>
+                                </div>
+                                <div id="loadedCategorys"></div>
+                            </div>
+                        </div>
+
+                        <div id="newCategoryContainer" class="d-none task-white-box task-subtask-container">
+                            <input type="text" placeholder="New category name" id="categoryInput"
+                                class="input-cat-sub no-outline">
+                            <div class="center spcae-between clear-add-button-container padding-17-right" id="#">
+                                <img class="clear-input pointer" onclick="closeCreateCategory()"
+                                    src="assets\img\Clear_task_input.png">
+                                <div>|</div>
+                                <img onclick="addCategory()" class="pointer" src="assets\img\create_subtask.png">
+                            </div>
+                        </div>
+
+                        <div id="color-picker" class="align-center padding-15-top d-none">
+                            <div class="task-category-color margin-20-right" id="colorPickCircle0"></div>
+                            <div class="task-category-color margin-20-right" id="colorPickCircle1"></div>
+                            <div class="task-category-color margin-20-right" id="colorPickCircle2"></div>
+                            <div class="task-category-color margin-20-right" id="colorPickCircle3"></div>
+                            <div class="task-category-color margin-20-right" id="colorPickCircle4"></div>
+                            <div class="task-category-color margin-20-right" id="colorPickCircle5"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Assinged to</div>
+                            <div id="contactReport" class="report d-none">This field is required</div>
+                        </div>
+                        <div class="dropdown-category-closed" id="assingedTo">
+                            <div onclick="pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys')"
+                                class="dd-placeholder" id="contactsToAssingContainer">
+                                <div>Contacts
+                                    to assign</div>
+                                <img id="ddArrow" src="assets/img/drop_down.png">
+                                <div class="center spcae-between clear-add-button-container d-none"
+                                    id="clearAddButtons">
+                                    <img class="clear-input pointer" onclick="clearContacts()"
+                                        src="assets\img\Clear_task_input.png">
+                                    <div>|</div>
+                                    <img onclick="addContacts()" class="pointer" src="assets\img\create_subtask.png">
+                                </div>
+                            </div>
+                            <div class="d-none task-more-content overflow-auto" id="moreContacts">
+                                <div id="loggedInUserAddTask"></div>
+                                <div id="loadedContacts"></div>
+                                <div onclick="openAddContact()" class="invite-new-contact gray-hover">
+                                    <div>Invite new contact</div>
+                                    <img src="assets/img/invite_Contact.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="task-initials-container" id="initialsContainer"></div>
+                </div>
+
+                <div class="second-inforamtion">
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Due date</div>
+                            <div id="dateReport" class="report d-none">This field is required</div>
+                        </div>
+                        <input type="text" placeholder="dd/mm/yyyy" id="date" class="task-white-box no-outline">
+                    </div>
+
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Prio</div>
+                            <div id="prioReport" class="report d-none">This field is required</div>
+                        </div>
+                        <div class="task-prio-container">
+                            <button class="task-prio-button center pointer spcae-evenly"
+                                onclick="priority('prioHigh', 'prioHighImg')" id="prioHigh">
+                                <div>Urgent</div>
+                                <img id="prioHighImg" src="assets/img/prio_high.svg">
+                            </button>
+                            <button class="task-prio-button center  spcae-evenly"
+                                onclick="priority('prioMedium', 'prioMediumImg')"
+                                id="prioMedium">
+                                <div>Medium</div>
+                                <img id="prioMediumImg" src="assets/img/prio_medium.svg">
+                            </button>
+                            <button class="task-prio-button center pointer spcae-evenly"
+                                onclick="priority('prioLow', 'prioLowImg')" id="prioLow">
+                                <div>Low</div>
+                                <img id="prioLowImg" src="assets/img/prio_low.svg">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="padding-36-bottom">
+                        <div class="display-flex">
+                            <div class="padding-10-bottom padding-17-right">Subtasks</div>
+                            <div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+                                ] "</div>
+                        </div>
+                        <div class="task-white-box task-subtask-container" id="subtask">
+                            <input type="text" placeholder="Add new subtask" id="subtaskInput"
+                                class="input-cat-sub no-outline" onclick="switchSubtaskIcons()">
+                            <div class="center" id="addSubtask">
+                                <img onclick="switchSubtaskIcons()" class="padding-17-right pointer"
+                                    src="assets/img/add_subtask.png">
+                            </div>
+                            <div class="center spcae-between clear-add-button-container padding-17-right d-none"
+                                id="createSubtask">
+                                <img class="clear-input pointer" onclick="switchSubtaskIcons()"
+                                    src="assets\img\Clear_task_input.png">
+                                <div>|</div>
+                                <img onclick="addSubtask()" class="pointer" src="assets\img\create_subtask.png">
+                            </div>
+                        </div>
+                        <div id="addetSubtasks"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="task-buttons task-display-none-responsiv">
+                <button onclick="clearAllFields()" id="clearButton" class="clear-task spcae-evenly pointer">
+                    Clear
+                    <img id="clearButtonImg" src="assets\img\Clear_task-new.svg">
+                </button>
+                <button onclick="collectAllInfos()" id="desktopCreateTask"
+                    class="create-task create-hover pointer spcae-evenly">
+                    Create Task
+                    <img src="assets/img/create_task.png">
+                </button>
+            </div>
+            <div class="overlay-section" id="overlaySection"></div>
+        </div>
+        <div id="addetToBoard" class="addet-to-board-position">
+            <div class="addet-to-board">
+                Task addet to board
+                <img class="addet-to-board-img" src="assets\img\board.png">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

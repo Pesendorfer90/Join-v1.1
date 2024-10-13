@@ -1,0 +1,600 @@
+.contacts-section {
+    display: flex;
+    flex-direction: row;
+    height: calc(100vh - 75px);
+    width: calc(100vw - 200px);
+    position: relative;
+}
+
+.contact-list {
+    overflow-y: auto;
+    box-shadow: 3px 5px 8px rgb(0 0 0 / 20%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+    max-width: 500px;
+    padding-top: 10px;
+    background: rgb(255, 255, 255);
+    padding-bottom: 20px;
+}
+
+.contacts-container {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    margin: 75px 55px;
+}
+
+.contacts-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 50px;
+}
+
+.contacts-headline {
+    font-size: 40px;
+    margin: 0;
+    padding-right: 32px;
+}
+
+.contacts-divider {
+    width: 0px;
+    height: 45px;
+    border: 2px solid rgb(41, 171, 226);
+    background-color: rgb(41, 171, 226);
+}
+
+.contacts-headline-small {
+    font-size: 27px;
+    padding-left: 32px;
+
+}
+
+.user-contact-button {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 200px;
+    border-radius: 10px;
+    padding: 12px;
+    background-color: rgb(44, 54, 70);
+    color: white;
+    gap: 10px;
+    border: none;
+    z-index: 99;
+    cursor: pointer;
+}
+
+.button-hover:hover {
+    background-color: rgb(83, 168, 223);
+    transform: scale(1.02);
+    transition: all 100ms ease-in-out;
+    box-shadow: 0px 3px 6px rgb(190, 190, 190);
+}
+
+.contact-card-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.contact-user-initiale {
+    width: 84px;
+    height: 84px;
+    border-radius: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    border: 3px solid white;
+    flex-shrink: 0;
+}
+
+.contact-member {
+    font-size: 30px;
+    padding-bottom: 10px;
+}
+
+.editorial {
+    display: flex;
+}
+
+.contact-edit {
+    padding-right: 15px;
+}
+
+.contact-edit:hover {
+    color: rgb(41, 171, 226);
+    cursor: pointer;
+}
+
+.contact-edit-pen {
+    margin-bottom: -3px;
+}
+
+.contact-edit-pen:hover {
+    color: rgb(41, 171, 226);
+    cursor: pointer;
+}
+
+.delete-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: -3px;
+}
+
+.contact-info {
+    font-size: 25px;
+    margin-top: 35px;
+}
+
+.info-mail {
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 40px;
+    padding-bottom: 15px;
+}
+
+.info-mail-adress {
+    color: rgb(0, 124, 238);
+    font-size: 16px;
+}
+
+.info-phone {
+    font-size: 16px;
+    font-weight: 700;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+.contact-initialen {
+    width: 84px;
+    height: 84px;
+    border-radius: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    border: 3px solid white;
+}
+
+.contact-task {
+    color: rgb(41, 171, 226);
+    cursor: pointer;
+}
+
+.contact-letter {
+    font-size: 20px;
+    padding-bottom: 10px;
+    height: 30px;
+    padding-left: 23px;
+    margin-top: 30px;
+    border-bottom: 1px solid rgb(209, 209, 209);
+    width: calc(85% - 12px);
+}
+
+.contact-list-box {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 10px;
+    width: 85%;
+    height: 50px;
+}
+
+.contact-initialen-small {
+    border-radius: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: 20px;
+    border: 1px solid white;
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+}
+
+.contact-list-box:hover {
+    cursor: pointer;
+}
+
+.contact-text {
+    /* width: auto; */
+    overflow: hidden;
+}
+
+.contact-list-name {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.contact-list-email {
+    color: rgb(0, 124, 238);
+    font-size: 16px;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.selected-contact {
+    position: relative;
+    flex-grow: 1;
+}
+
+#contact-trash:hover {
+    color: rgb(41, 171, 226);
+    cursor: pointer;
+}
+
+.d-none {
+    display: none;
+}
+
+.contact-overlay-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateX(600%);
+    transition: transform 0.5s ease-in-out;
+}
+
+.contact-overlay-box-animate {
+    transform: translateX(0%);
+}
+
+.contact-overlay-container {
+    background-color: rgba(239, 243, 245, 0.20);
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.contact-overlay-container-section {
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-overlay-section {
+    background-color: rgb(44, 54, 70);
+    width: 300px;
+    height: 416px;
+    padding-left: 46px;
+    padding-right: 46px;
+    gap: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
+
+.contact-overlay-headline {
+    font-size: 40px;
+    font-weight: 700;
+    color: white;
+    line-height: 51px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.contact-overlay-subheadline {
+    font-size: 19px;
+    font-weight: 400px;
+    color: white;
+    line-height: 23px;
+}
+
+.contact-overlay-logo {
+    height: 46.2px;
+    width: 38.5px;
+}
+
+.contact-overlay-divider {
+    border: 2px solid rgb(41, 171, 226);
+    background-color: rgb(41, 171, 226);
+    width: 0px;
+    height: 90px;
+    transform: rotate(90deg);
+    margin-left: 46px;
+    margin-top: -42px;
+}
+
+.contact-overlay-form-section {
+    width: 500px;
+    height: 416px;
+    background-color: rgb(255, 255, 255);
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.contact-overlay-icon-box {
+    width: 84px;
+    height: 84px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 3px solid white;
+}
+
+.contact-overlay-icon {
+    width: 28px;
+    height: 37.8px;
+}
+
+.contact-form-container input {
+    width: 270px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 15px;
+    font-size: 16px;
+    padding-left: 24px;
+    padding-right: 24px;
+    color: rgb(209, 209, 209);
+    border: 1px solid rgb(209, 209, 209);
+}
+
+.contact-overlay-name {
+    background: url(/assets/img/contact_form_user.png) no-repeat;
+    background-position: right 15px top 15px;
+}
+
+.contact-overlay-email {
+    background: url(/assets/img/contact_form_email.png) no-repeat;
+    background-position: right 15px top 15px;
+}
+
+.contact-overlay-phone {
+    background: url(/assets/img/contact_form_phone.png) no-repeat;
+    background-position: right 15px top 15px;
+}
+
+.contact-form-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    gap: 30px;
+
+}
+
+.contact-overlay-form-box {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 40px;
+}
+
+.close-form {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    padding-top: 20px;
+}
+
+.contact-overlay-buttons {
+    margin-top: 30px;
+    gap: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.contact-cancel-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(42, 54, 71);
+    border-radius: 10px;
+    gap: 12px;
+    padding: 10px;
+    height: 40px;
+    font-size: 15px;
+}
+
+.contact-cancel-button:hover {
+    border: 2px solid rgb(83, 168, 223);
+    color: rgb(83, 168, 223);
+    transform: scale(1.02);
+    transition: all 100ms ease-in-out;
+    box-shadow: 0px 3px 6px rgb(190, 190, 190);
+    cursor: pointer;
+}
+
+.contact-create-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(44, 54, 70);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    gap: 12px;
+    padding: 10px;
+    margin-right: 55px;
+    height: 40px;
+    font-size: 15px;
+    border: none;
+    cursor: pointer;
+}
+
+.contact-delete-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgb(42, 54, 71);
+    border-radius: 10px;
+    gap: 12px;
+    padding: 10px;
+    height: 40px;
+    width: 65px;
+    font-size: 15px;
+}
+
+.contact-delete-button:hover {
+    border: 2px solid rgb(83, 168, 223);
+    color: rgb(83, 168, 223);
+    transform: scale(1.02);
+    transition: all 100ms ease-in-out;
+    box-shadow: 0px 3px 6px rgb(190, 190, 190);
+    cursor: pointer;
+}
+
+.contact-save-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(44, 54, 70);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    border: none;
+    gap: 12px;
+    padding: 10px;
+    margin-right: 65px;
+    height: 40px;
+    width: 130px;
+    font-size: 15px;
+}
+
+.contact-save-button:hover {
+    background-color: rgb(83, 168, 223);
+    transform: scale(1.02);
+    transition: all 100ms ease-in-out;
+    box-shadow: 0px 3px 6px rgb(190, 190, 190);
+    cursor: pointer;
+}
+
+.close-form-mobile {
+    visibility: hidden;
+}
+
+.mobile-user-contact-button {
+    margin-right: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    color: white;
+    background-color: rgb(44, 54, 70);
+    border: 1px solid rgb(44, 54, 70);
+    border-radius: 10px;
+    gap: 12px;
+    padding: 10px;
+    height: 35px;
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: 700;
+    visibility: hidden;
+}
+
+.mobile-user-contact-button:hover {
+    background-color: rgb(83, 168, 223);
+    transform: scale(1.02);
+    transition: all 100ms ease-in-out;
+    box-shadow: 0px 3px 6px rgb(190, 190, 190);
+}
+
+.mobile-contact-button-container {
+    position: fixed;
+    top: 70px;
+    left: 0px;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: flex-end;
+    z-index: 20;
+    background: transparent;
+    visibility: hidden;
+}
+
+.overlay-section {
+    z-index: 99;
+}
+
+.contact-info-buttons {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    align-items: end;
+    gap: 10px;
+    bottom: 0;
+    right: 0;
+}
+
+.trash-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.edit-contact-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.change-background-color {
+    background-color: rgb(44, 54, 70);
+    color: white;
+}
+
+.change-background-color:hover {
+    background-color: rgb(44, 54, 70);
+}
+
+.popup-contact-created {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 5px 10px;
+    color: white;
+    background-color: rgb(44, 54, 70);
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.single-user {
+    background-color: rgb(246, 247, 248);
+}
+
+.contact-left-arrow {
+    display: none;
+}
+
+.contact-kanban {
+    display: none;
+}
+
+.arrow-container {
+    display: none;
+}
