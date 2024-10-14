@@ -2,6 +2,10 @@
     cursor: pointer;
 }
 
+.board-overflow {
+    overflow: hidden;
+}
+
 /*-------------------------------------------------
 general
 -------------------------------------------------*/
@@ -16,9 +20,11 @@ body {
 }
 
 #board {
-    padding: 30px 60px 0 60px;
+    padding: 30px 60px 20px 60px;
     width: calc(100vw - 320px);
     max-width: 1400px;
+    overflow: auto;
+    height: calc(100% - 50px)
 }
 
 #board-top-claim {
@@ -330,7 +336,7 @@ Task detail view
     width: 100vw;
     height: 100vh;
 
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     display: flex;
@@ -347,11 +353,12 @@ Task detail view
     padding: 50px;
     gap: 25px;
     width: 523px;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 140px);
 
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
     border-radius: 30px;
+    margin: 20px;
 
     position: relative;
 }
@@ -438,10 +445,8 @@ Task detail view
 }
 
 .edit-buttons {
-    position: absolute;
-    bottom: 35px;
-    right: 35px;
     gap: 0 !important;
+    justify-content: flex-end;
 }
 
 #board-detail-view-delete-button {
@@ -542,6 +547,7 @@ Board - edit task overlay
     width: 523px;
     padding: 50px;
     gap: 25px;
+    margin: 20px;
 
     background: #FFFFFF;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
@@ -551,7 +557,7 @@ Board - edit task overlay
 
     font-size: 16px;
     font-weight: 400;
-    max-height: calc(100% - 100px);
+    max-height: calc(100% - 140px);
 }
 
 .board-overlay-scroll {
@@ -725,23 +731,21 @@ darg and drop functionality
 
 
 #board-add-task {
-    width: calc(100% - 120px);
-    height: calc(100% - 120px);
-    max-width: calc(900px - 120px);
-    max-height: calc(700px - 120px);
-    border-radius: 30px;
-    background-color: rgb(255, 255, 255);
-    padding: 60px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    padding: 50px;
+    background-color: rgb(255, 255, 255);
+    max-height: calc(100% - 140px);
+    border-radius: 30px;
     position: relative;
+    width: 100%;
+    max-width: 750px;
+    margin: 20px;
 }
 
 .add-task-container-overlay {
     display: flex;
     flex-direction: column;
-    justify-content: center;
 
     padding: 0;
     font-size: 16px;
@@ -765,11 +769,6 @@ Responsive Design
         padding: 0;
         padding-left: 4px;
     }
-
-    #board-add-task {
-        width: calc(100% - 60px);
-    }
-
 }
 
 @media (max-width: 900px) {
@@ -784,7 +783,7 @@ Responsive Design
 
     .board-overlay {
         width: 100vw;
-        min-height: calc(100vh - 150px);
+        height: 100vh;
     }
 
     .board-kanban-task-card-footer-assignees {
@@ -795,6 +794,9 @@ Responsive Design
 @media (max-width: 700px) {
 
     .board-overlay {
+        width: 100vw;
+        height: calc(100vh - 150px);
+        top: 75px;
         background: #F6F7F8;
         align-items: flex-start;
         padding: 0;
@@ -802,8 +804,8 @@ Responsive Design
 
     #board-detail-view {
         width: 100%;
-        height: calc(100% - 140px);
-        padding: 70px;
+        padding: 20px 50px;
+        max-height: calc(100% - 40px);
         background: none;
         box-shadow: none;
         border-radius: unset;
@@ -819,7 +821,6 @@ Responsive Design
     .board-kanban-column {
         width: 100%;
         gap: 8px;
-        /* margin: 0 40px; */
         margin-top: 24px;
     }
 
@@ -858,6 +859,9 @@ Responsive Design
 
     #board-add-task {
         background-color: transparent;
+        margin: 0;
+        padding: 20px 50px;
+        max-height: calc(100% - 40px);
     }
 
     #board-task-editor {
@@ -866,7 +870,12 @@ Responsive Design
         width: calc(100% - 50px);
         height: 100%;
         overflow-y: auto;
+        margin: 0;
+        padding: 50px 50px 20px 50px;
+        max-height: calc(100% - 70px);
     }
+
+
 
     .board-display-none-700px {
         display: none !important;
@@ -890,11 +899,6 @@ Responsive Design
 
     #board-responsive-search-bar {
         width: fit-content;
-    }
-
-    .edit-buttons {
-        position: unset;
-        justify-content: flex-end;
     }
 }
 
@@ -928,5 +932,14 @@ Responsive Design
         padding: 30px;
         height: calc(100% - 60px);
         overflow-y: auto;
+    }
+
+    #board-task-editor {
+        padding: 50px 20px 20px 20px;
+        max-height: calc(100% - 70px);
+    }
+
+    #board-add-task {
+        padding: 20px;
     }
 }

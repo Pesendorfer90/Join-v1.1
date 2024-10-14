@@ -1,7 +1,7 @@
-let boardDropTargetColumn = ''; 
-let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0; 
+let boardDropTargetColumn = '';
+let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 
-let taskCountPerColumn = []; 
+let taskCountPerColumn = [];
 
 let tasksInColumn = [[], [], [], []];
 
@@ -71,9 +71,11 @@ function boardCreateEventListenerMouse(boardDragElement, i) {
         pos3 = e.clientX;
         pos4 = e.clientY;
         changeHeight();
+        changeScroll(true);
 
         document.onmouseup = function () {
             handleDropping(i);
+            changeScroll(false);
         }
 
         document.onmousemove = function (e) {
@@ -110,6 +112,8 @@ function boardCreateEventListenerTouch(boardDragElement, i) {
         e = e.changedTouches[0];
         pos3 = e.clientX;
         pos4 = e.clientY;
+        changeHeight();
+        changeScroll(true);
         document.addEventListener('touchend', handleEnd);
         document.addEventListener('touchmove', handleMove, { passive: false });
 
@@ -117,6 +121,7 @@ function boardCreateEventListenerTouch(boardDragElement, i) {
             document.removeEventListener('touchend', handleEnd);
             document.removeEventListener('touchmove', handleMove);
             handleDropping(i);
+            changeScroll(false);
         }
 
         function handleMove(e) {
@@ -532,7 +537,16 @@ function boardComputeOffsetY(offsetY, i) {
 
 function changeHeight() {
     let divs = document.querySelectorAll('.board-drop-container');
-    divs.forEach(function(container) {
+    divs.forEach(function (container) {
         container.style.height = '260px';
     });
+}
+
+function changeScroll(hidde) {
+    let board = document.getElementById('board');
+    if (hidde) {
+        board.classList.add('board-overlay-scroll');
+    } else {
+        board.classList.remove('board-overlay-scroll');
+    }
 }

@@ -26,18 +26,31 @@
 <body onload="initContact()">
     <div w3-include-html="assets/templates/desktop_side_menu_template.html"></div>
     <div class="column-content">
+        <div class="mobile-contact-button-container" id="mobile-contact-button-container">
+            <div class="mobile-user-contact-button" id="addUser" onclick="openNewContactForm()">
+                New contact
+                <img src="assets/img/contact_user.png" alt="">
+            </div>
+        </div>
         <div w3-include-html="assets/templates/desktop_top_template.html"></div>
         <div class="content-alignment">
-            <div class="mobile-contact-button-container" id="mobile-contact-button-container">
+            <!-- <div class="mobile-contact-button-container" id="mobile-contact-button-container">
                 <div class="mobile-user-contact-button" id="addUser" onclick="openNewContactForm()">
                     New contact
                     <img src="assets/img/contact_user.png" alt="">
                 </div>
-            </div>
+            </div> -->
 
             <div class="contacts-section" id="contacts-section">
                 <!--Kontakt-Liste-->
-                <div id="contact-list" class="contact-list"></div>
+                <div id="contact-list" class="contact-list">
+                    <div class="mobile-contact-button-container" id="mobile-contact-button-container">
+                        <div class="mobile-user-contact-button" id="addUser" onclick="openNewContactForm()">
+                            New contact
+                            <img src="assets/img/contact_user.png" alt="">
+                        </div>
+                    </div>
+                </div>
 
                 <!--Detail-Ansicht-->
                 <div id="contacts-container" class="contacts-container">

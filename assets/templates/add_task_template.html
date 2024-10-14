@@ -1,4 +1,3 @@
-<!-- 
 <img class="board-close-icon board-cursor-pointer" onclick="boardHideAddtaskOverlay()"
 src="./assets/img/board/close.svg" alt="close-icon">
 
@@ -10,7 +9,7 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
         Create
         <img src="assets/img/create_task.png">
     </button>
-</div> -->
+</div>
 <div class="add-task-container add-task-container-overlay">
 
     <div class="task-headline">
@@ -77,9 +76,43 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
             </div>
 
 
-            <div id="board-add-task-assignee-picker">
-            </div>
+            <!-- <div id="board-add-task-assignee-picker">
+            </div> -->
 
+
+
+
+            <div>
+                <div class="display-flex">
+                    <div class="padding-10-bottom padding-17-right">Assinged to</div>
+                    <div id="contactReport" class="report d-none">This field is required</div>
+                </div>
+                <div class="dropdown-category-closed" id="assingedTo">
+                    <div onclick="pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys')"
+                        class="dd-placeholder" id="contactsToAssingContainer">
+                        <div>Contacts
+                            to assign</div>
+                        <img id="ddArrow" src="assets/img/drop_down.png">
+                        <div class="center spcae-between clear-add-button-container d-none"
+                            id="clearAddButtons">
+                            <img class="clear-input pointer" onclick="clearContacts()"
+                                src="assets\img\Clear_task_input.png">
+                            <div>|</div>
+                            <img onclick="addContacts()" class="pointer"
+                                src="assets\img\create_subtask.png">
+                        </div>
+                    </div>
+                    <div class="d-none task-more-content overflow-auto" id="moreContacts">
+                        <div id="loggedInUserAddTask"></div>
+                        <div id="loadedContacts"></div>
+                        <div onclick="openAddContact()" class="invite-new-contact gray-hover">
+                            <div>Invite new contact</div>
+                            <img src="assets/img/invite_Contact.png">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="task-initials-container" id="initialsContainer"></div>
 
     
         </div>
@@ -99,18 +132,18 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
                     <div id="prioReport" class="report d-none">This field is required</div>
                 </div>
                 <div class="task-prio-container">
-                    <button class="task-prio-button center pointer spcae-evenly"
+                    <button class="task-prio-button center pointer"
                         onclick="priority('prioHigh', 'prioHighImg')" id="prioHigh">
                         <div>Urgent</div>
                         <img id="prioHighImg" src="assets/img/prio_high.svg">
                     </button>
-                    <button class="task-prio-button center  spcae-evenly"
+                    <button class="task-prio-button center pointer"
                         onclick="priority('prioMedium', 'prioMediumImg')"
                         id="prioMedium">
                         <div>Medium</div>
                         <img id="prioMediumImg" src="assets/img/prio_medium.svg">
                     </button>
-                    <button class="task-prio-button center pointer spcae-evenly"
+                    <button class="task-prio-button center pointer"
                         onclick="priority('prioLow', 'prioLowImg')" id="prioLow">
                         <div>Low</div>
                         <img id="prioLowImg" src="assets/img/prio_low.svg">
@@ -136,9 +169,9 @@ src="./assets/img/board/arrow-left-line.svg" alt="">
     </div>
     <div class="overlay-section" id="overlaySection"></div>
 </div>
-<!-- <div id="addetToBoard" class="addet-to-board-position">
+<div id="addetToBoard" class="addet-to-board-position">
     <div class="addet-to-board">
         Task addet to board
         <img class="addet-to-board-img" src="assets\img\board.png">
     </div>
-</div> -->
+</div>

@@ -211,8 +211,11 @@ function signUpUser(account, contact) {
     database['users'].push(account);
     database['contacts'].push(contact);
     setItem('database', database);
-    alert("Account has been created");
     clearSignUpInput();
+    setTimeout(() => {
+        openLogin();
+    }, 500);
+    alert("Account has been created");
 }
 
 
@@ -225,26 +228,34 @@ function accountData() {
     let usernameSignUp = document.getElementById('username').value;
     let emailSignUp = document.getElementById('signUpEmail').value;
     let passwordSignUp = document.getElementById('signUpPassword').value;
+    let lastname = '';
 
-    if (checkIfUserExists(usernameSignUp, emailSignUp) == false) {
-        return
+    if (checkIfUserExists(emailSignUp) == false) {
+        console.error("Email is already in use")
+    } else {
+
+        if (usernameSignUp.includes(' ')) {
+            let name = usernameSignUp.split(' ');
+            firstname = name[0];
+            lastname = name[name.length - 1];
+        }
+
+        let account = {
+            "username": usernameSignUp,
+            "email": emailSignUp,
+            "password": passwordSignUp
+        }
+
+        let contact = {
+            "firstname": firstname,
+            "lastname": lastname,
+            "email": emailSignUp,
+            "phone": "",
+            "color": generateRandomColor()
+        }
+
+        signUpUser(account, contact);
     }
-
-    let account = {
-        "username": usernameSignUp,
-        "email": emailSignUp,
-        "password": passwordSignUp
-    }
-
-    let contact = {
-        "firstname": usernameSignUp,
-        "lastname": "",
-        "email": emailSignUp,
-        "phone": "",
-        "color": generateRandomColor()
-    }
-
-    signUpUser(account, contact);
 }
 
 
@@ -255,12 +266,8 @@ function accountData() {
  * @param {string} emailSignUp This is the email to sign up
  * @returns It returns "false" if the email or the username already exists and "true" if they doesn´t exists
  */
-function checkIfUserExists(usernameSignUp, emailSignUp) {
+function checkIfUserExists(emailSignUp) {
     for (let i = 0; i < users.length; i++) {
-        if (usernameSignUp == users[i]['username']) {
-            alert("Username is already taken");
-            return false
-        };
         if (emailSignUp == users[i]['email']) {
             alert("Email is already in use");
             return false

@@ -210,6 +210,8 @@ main {
         display: flex;
         flex-direction: column;
         padding: 30px;
+        height: calc(100% - 60px);
+        overflow: auto;
     }
 
     .header-container {

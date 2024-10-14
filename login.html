@@ -33,10 +33,12 @@
         <form onsubmit="checkLogin(); return false; disableButton('logInButton')" id="loginContainer" class="login-container d-none">
             <span>Log in</span>
             <div class="blue-line"></div>
-            <div class="input-container"><input required id="email" type="email" placeholder="Email"><img
-                    src="assets/img/mail.png" alt=""></div>
-            <div id="passwordContainer" class="input-container"><input onkeyup="switchPasswordPicture()" required
-                    id="password" type="password" placeholder="Password">
+            <div class="input-container">
+                <input required id="email" type="email" placeholder="Email">
+                <img src="assets/img/mail.png" alt="">
+            </div>
+            <div id="passwordContainer" class="input-container">
+                <input onkeyup="switchPasswordPicture()" required id="password" type="current-password" placeholder="Password">
                 <img id="lock" src="assets/img/lock.png" alt="">
                 <img onclick="showPassword1()" id="hidePassword" class="d-none" src="assets/img/hide_password.png"
                     alt="">
@@ -63,12 +65,18 @@
             <img onclick="openLogin()" class="blue-arrow" src="assets/img/blue-arrow-left.png" alt="">
             <span>Sign up</span>
             <div class="blue-line"></div>
-            <div class="input-container"><input required id="username" type="text" placeholder="Name"><img
-                    src="assets/img/user-line.png" alt=""></div>
-            <div class="input-container"><input required id="signUpEmail" type="email" placeholder="Email"><img
-                    src="assets/img/mail.png" alt=""></div>
-            <div class="input-container"><input required id="signUpPassword" type="password" placeholder="Password"><img
-                    src="assets/img/lock.png" alt=""></div>
+            <div class="input-container">
+                <input required id="username" type="text" placeholder="Name">
+                <img src="assets/img/user-line.png" alt="">
+            </div>
+            <div class="input-container">
+                <input required id="signUpEmail" type="email" placeholder="Email">
+                <img src="assets/img/mail.png" alt="">
+            </div>
+            <div class="input-container">
+                <input required id="signUpPassword" type="new-password" placeholder="Password">
+                <img src="assets/img/lock.png" alt="">
+            </div>
             <button id="signUpButton" class="button-dark margin-top-20px">Sign up</button>
         </form>
 
@@ -79,8 +87,10 @@
             <div class="blue-line"></div>
             <div class="forgot-text">Don´t worry! We will send you an email with the instructions to <br> reset your
                 password.</div>
-            <div class="input-container"><input id="forgotPwEmail" type="email" placeholder="Email"><img
-                    src="assets/img/mail.png" alt=""></div>
+            <div class="input-container">
+                <input id="forgotPwEmail" type="email" placeholder="Email">
+                <img src="assets/img/mail.png" alt="">
+            </div>
             <button id="sendMailButton" class="button-dark margin-top-20px width-180px">Send me the email</button>
         </form>
 
@@ -90,9 +100,11 @@
             <span class="padding-left-right-40px">Reset your password</span>
             <div class="blue-line"></div>
             <div class="forgot-text">Change your account password</div>
-            <div class="input-container"><input required id="newPassword" type="password" placeholder="New Password">
+            <div class="input-container">
+                <input required id="newPassword" type="new-password" placeholder="New Password">
             </div>
-            <div id="confirmedPasswordContainer" class="input-container"><input required id="confirmedPassword" type="password"
+            <div id="confirmedPasswordContainer" class="input-container">
+                <input required id="confirmedPassword" type="new-password"
                     placeholder="Confirm Password">
             </div>
             <div id="passwordDontMatch">Your Passwords don´t match. Try again</div>

@@ -81,7 +81,6 @@
     padding-right: 60px;
     font-size: 16px;
     max-width: 800px;
-    width: 66%;
 }
 
 .task-headline {
@@ -190,12 +189,8 @@
     cursor: pointer;
 }
 
-/* #newCategoryContainer {
-    max-width: 264px;
-} */
-
 .dropdown-category-open {
-    height: 200px !important;
+    height: 183px !important;
 }
 
 .task-select-box {
@@ -225,7 +220,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* background-color: red; */
     border-radius: 50%;
     width: 45px;
     height: 45px;
@@ -244,6 +238,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    gap: 3px;
 }
 
 .task-prio-button {
@@ -257,6 +252,20 @@
     background-color: rgb(255, 255, 255);
     box-sizing: border-box;
     transition: all .2s ease-in-out;
+    padding: 0 2px;
+    gap: 6px;
+}
+
+.task-prio-button:nth-child(1) {
+    min-width: 92px;
+}
+
+.task-prio-button:nth-child(2) {
+    min-width: 98px;
+}
+
+.task-prio-button:nth-child(3) {
+    min-width: 69px;
 }
 
 .task-prio-button:hover {
@@ -325,10 +334,10 @@
 
 .clear-task {
     background-color: rgb(246, 247, 248);
-    /* font-size: 16px; */
+    font-size: 16px;
     color: rgb(44, 54, 70);
     width: 90px;
-    height: 40px;
+    height: 45px;
     border: 1px solid rgb(44, 54, 70);
     border-radius: 10px;
     margin-right: 25px;
@@ -354,10 +363,10 @@
 
 .create-task {
     background-color: rgb(44, 54, 70);
-    /* font-size: 18px; */
+    font-size: 16px;
     color: rgb(246, 247, 248);
-    width: 130px;
-    height: 40px;
+    width: 135px;
+    height: 45px;
     border: none;
     border-radius: 10px;
     font-weight: 700;

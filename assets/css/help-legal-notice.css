@@ -1,11 +1,10 @@
 .help-container,
 .legal-notice-container {
-    padding-left: 60px;
-    padding-top: 30px;
-    padding-bottom: 30px;
-    padding-right: 60px;
+    padding: 30px 60px;
     font-size: 16px;
+    width:calc(100% - 120px);
     max-width: 1080px;
+    overflow: auto;
 }
 
 .headline {
@@ -29,13 +28,12 @@ td:first-child {
 }
 
 
-@media(max-width: 900px) {
+@media(max-width: 500px) {
     
     .help-container,
     .legal-notice-container {
-        padding-left: 5.613vw;
-        padding-top: 30px;
-        padding-right: 5.613vw;
+        padding: 30px;
+        width:calc(100% - 60px);
     }
 }
 

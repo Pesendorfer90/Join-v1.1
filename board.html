@@ -16,6 +16,8 @@
     <script src="./assets/js/board2.js"></script>
     <script src="./assets/js/board3.js"></script>
     <script src="./assets/js/board_templates.js"></script>
+    <script src="./assets/js/contacts.js"></script>
+    <script src="./assets/js/contactsTemplates.js"></script>
 
     <script src="assets\node_modules\js-datepicker\dist\datepicker.min.js"></script>
 
@@ -28,6 +30,8 @@
     <link rel="stylesheet" href="./assets/css/add-task.css">
     <link rel="stylesheet" href="./assets/css/board.css">
     <link rel="stylesheet" href="assets\node_modules\js-datepicker\dist\datepicker.min.css">
+    <link rel="stylesheet" href="./assets/css/contacts.css">
+    <link rel="stylesheet" href="./assets/css/contact-mobile.css">
 
 </head>
 
@@ -40,7 +44,7 @@
         <div w3-include-html="assets/templates/desktop_top_template.html" style="position: absolute; z-index: 999999;">
         </div>
 
-        <div class="content-alignment">
+        <div class="content-alignment" id="contentAlignment">
             <div id="board">
 
                 <div id="board-top-claim">Kanban Project Management Tool</div>
@@ -136,148 +140,132 @@
                             <div id="board-kanban-column-done-drop-target-zone"
                                 class="board-drop-target-zone board-display-none"></div>
                         </div>
-
                     </div>
-
-                </div>
-
-
-                <div class="board-overlay board-display-none">
-
-                    <!-- --------------------------------------------------------------
-            Detail View
-            -------------------------------------------------------------- -->
-
-                    <div id="board-detail-view" class="board-display-none board-overlay-scroll">
-
-                        <img class="board-close-icon board-cursor-pointer" onclick="boardHideTaskDetails()"
-                            src="./assets/img/board/close.svg" alt="close-icon">
-
-                        <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskDetails()"
-                            src="./assets/img/board/arrow-left-line.svg" alt="">
-
-                        <div id="board-detail-view-category-tag" class="board-department-tag">Sales</div>
-
-                        <h1 id="board-detail-view-title">Call potential clients</h1>
-
-                        <p id="board-detail-view-description">Make the product presentation to prospective buyers</p>
-
-                        <div id="board-detail-view-due-date">
-                            Due date:
-                            <div>05-08-2022</div>
-                        </div>
-
-                        <div>
-                            Priority:
-                            <div id="board-detail-view-priority-tag" class="board-detail-view-priority-tag-urgent">
-                            </div>
-                        </div>
-
-                        <div class="board-column">
-                            Subtasks
-                            <div class="board-column" id="board-detail-view-subtasks">
-                            </div>
-                        </div>
-
-                        <div id="board-detail-view-assignees">Assigned to:
-                        </div>
-                        <div class="edit-buttons">
-                            <div id="board-detail-view-delete-button" onclick="boardDeleteTask()"
-                                class="board-cursor-pointer">
-                                <img src="./assets/img/board/delete_task.svg" alt="">
-                            </div>
-
-                            <div id="board-detail-view-edit-button" onclick="boardShowTaskEditor()"
-                                class="board-cursor-pointer">
-                                <img src="./assets/img/board/edit_task.svg" alt="">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- --------------------------------------------------------------
-            Editor
-            -------------------------------------------------------------- -->
-
-                    <div id="board-task-editor" class="board-display-none board-overlay-scroll">
-
-                        <img class="board-close-icon board-cursor-pointer" src="./assets/img/board/close.svg"
-                            onclick="boardHideTaskEditor()" alt="close-icon">
-
-                        <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskEditor()"
-                            src="./assets/img/board/arrow-left-line.svg" alt="">
-
-
-                        <div class="task-editor-section">
-                            Title
-                            <input id="task-editor-title" type="text" class="board-task-editor-input">
-                        </div>
-
-                        <div class="task-editor-section">
-                            Description
-                            <textarea id="task-editor-description"></textarea>
-                        </div>
-
-                        <div class="task-editor-section">
-                            Due Date
-                            <input id="task-editor-date" type="date" class="board-task-editor-input">
-                        </div>
-
-                        <div class="task-editor-section">
-                            Prio
-                            <div id="task-editor-prio-buttons">
-                                <button id="task-editor-prio-button-high"
-                                    onclick="taskEditorRenderPrioButtons('high')">Urgent
-                                    <img id="task-editor-prio-icon-high" src="./assets/img/board/prio_high_white.svg"
-                                        alt="">
-                                </button>
-
-                                <button id="task-editor-prio-button-medium"
-                                    onclick="taskEditorRenderPrioButtons('medium')">Medium
-                                    <img id="task-editor-prio-icon-medium"
-                                        src="./assets/img/board/prio_medium_white.svg" alt="">
-                                </button>
-
-                                <button id="task-editor-prio-button-low"
-                                    onclick="taskEditorRenderPrioButtons('low')">Low
-                                    <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg" alt="">
-                                </button>
-                            </div>
-                        </div>
-
-                        <div id="board-task-editor-subtasks"></div>
-
-
-                        <div id="board-task-editor-assignee-picker" class="task-editor-section">
-
-                        </div>
-
-
-
-                        <div id="task-editor-footer" class="task-editor-section">
-                            <button id="board-task-editor-confirm-changes" onclick="boardConfirmEditorChanges()"
-                                class="board-cursor-pointer">
-                                Ok<img src="./assets/img/board/checkmark.svg" alt="">
-                            </button>
-                        </div>
-
-
-
-
-                    </div>
-
-
-
-                    <!-- --------------------------------------------------------------
-            add Task
-            -------------------------------------------------------------- -->
-
-
-                    <div id="board-add-task" class="board-display-none board-overlay-scroll"
-                        w3-include-html="./assets/templates/add_task_template.html">
-                    </div>
-
                 </div>
             </div>
+        </div>
+
+    </div>
+
+    <div class="board-overlay board-display-none">
+
+        <!------------ Detail View ---------------->
+
+        <div id="board-detail-view" class="board-display-none board-overlay-scroll">
+
+            <img class="board-close-icon board-cursor-pointer" onclick="boardHideTaskDetails()"
+                src="./assets/img/board/close.svg" alt="close-icon">
+
+            <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskDetails()"
+                src="./assets/img/board/arrow-left-line.svg" alt="">
+
+            <div id="board-detail-view-category-tag" class="board-department-tag">Sales</div>
+
+            <h1 id="board-detail-view-title">Call potential clients</h1>
+
+            <p id="board-detail-view-description">Make the product presentation to prospective buyers</p>
+
+            <div id="board-detail-view-due-date">
+                Due date:
+                <div>05-08-2022</div>
+            </div>
+
+            <div>
+                Priority:
+                <div id="board-detail-view-priority-tag" class="board-detail-view-priority-tag-urgent">
+                </div>
+            </div>
+
+            <div class="board-column">
+                Subtasks
+                <div class="board-column" id="board-detail-view-subtasks">
+                </div>
+            </div>
+
+            <div id="board-detail-view-assignees">Assigned to:
+            </div>
+            <div class="edit-buttons">
+                <div id="board-detail-view-delete-button" onclick="boardDeleteTask()" class="board-cursor-pointer">
+                    <img src="./assets/img/board/delete_task.svg" alt="">
+                </div>
+
+                <div id="board-detail-view-edit-button" onclick="boardShowTaskEditor()" class="board-cursor-pointer">
+                    <img src="./assets/img/board/edit_task.svg" alt="">
+                </div>
+            </div>
+        </div>
+
+        <!--------------- Editor -------------------->
+
+        <div id="board-task-editor" class="board-display-none board-overlay-scroll">
+
+            <img class="board-close-icon board-cursor-pointer" src="./assets/img/board/close.svg"
+                onclick="boardHideTaskEditor()" alt="close-icon">
+
+            <img class="board-close-arrow board-cursor-pointer" onclick="boardHideTaskEditor()"
+                src="./assets/img/board/arrow-left-line.svg" alt="">
+
+
+            <div class="task-editor-section">
+                Title
+                <input id="task-editor-title" type="text" class="board-task-editor-input">
+            </div>
+
+            <div class="task-editor-section">
+                Description
+                <textarea id="task-editor-description"></textarea>
+            </div>
+
+            <div class="task-editor-section">
+                Due Date
+                <input id="task-editor-date" type="date" class="board-task-editor-input">
+            </div>
+
+            <div class="task-editor-section">
+                Prio
+                <div id="task-editor-prio-buttons">
+                    <button id="task-editor-prio-button-high" onclick="taskEditorRenderPrioButtons('high')">Urgent
+                        <img id="task-editor-prio-icon-high" src="./assets/img/board/prio_high_white.svg" alt="">
+                    </button>
+
+                    <button id="task-editor-prio-button-medium" onclick="taskEditorRenderPrioButtons('medium')">Medium
+                        <img id="task-editor-prio-icon-medium" src="./assets/img/board/prio_medium_white.svg" alt="">
+                    </button>
+
+                    <button id="task-editor-prio-button-low" onclick="taskEditorRenderPrioButtons('low')">Low
+                        <img id="task-editor-prio-icon-low" src="./assets/img/prio_low_white.svg" alt="">
+                    </button>
+                </div>
+            </div>
+
+            <div id="board-task-editor-subtasks"></div>
+
+
+            <div id="board-task-editor-assignee-picker" class="task-editor-section">
+
+            </div>
+
+
+
+            <div id="task-editor-footer" class="task-editor-section">
+                <button id="board-task-editor-confirm-changes" onclick="boardConfirmEditorChanges()"
+                    class="board-cursor-pointer">
+                    Ok<img src="./assets/img/board/checkmark.svg" alt="">
+                </button>
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <!--------------- add Task ------------------>
+
+
+        <div id="board-add-task" class="board-display-none board-overlay-scroll"
+            w3-include-html="./assets/templates/add_task_template.html">
         </div>
 
     </div>

@@ -178,6 +178,8 @@ async function addContact() {
     closeContactOverlay();
     if (window.location.pathname == '/contacts.html') {
         loadContacts();
+    } if (window.location.pathname == '/board.html') {
+        renderContacts();
     }
 }
 

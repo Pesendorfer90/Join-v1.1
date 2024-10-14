@@ -15,8 +15,27 @@ body {
     position: absolute;
     left: 200px;
     top: 75px;
-    height: calc( 100% - 75px);
-    width: calc( 100% - 200px);
+    height: calc(100% - 75px);
+    width: calc(100% - 200px);
+    overflow: auto;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #b1b1b1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #919191;
 }
 
 
@@ -31,6 +50,6 @@ body {
     .content-alignment {
         left: 0;
         width: 100%;
-        height: calc( 100% - 150px);
+        height: calc(100% - 150px);
     }
 }

@@ -8,7 +8,6 @@ function boardShowAddtaskOverlay(progress) {
     subtasks = [];
     subtaskStatus = [];
 
-    boardIncludeAssignePickerOnAddTask();
     document.getElementById('board-add-task-subtasks').innerHTML = boardAddTaskTemplateSubtasks();
 
     renderCategorys();
@@ -16,6 +15,7 @@ function boardShowAddtaskOverlay(progress) {
     document.getElementById('board-add-task').classList.remove('board-display-none');
     document.getElementById('board-add-task').parentNode.classList.remove('board-display-none');
     document.getElementById('board-kanban').classList.add('board-display-none-700px');
+    document.getElementById('contentAlignment').classList.add('board-overflow');
 }
 
 
@@ -24,7 +24,6 @@ function boardHideAddtaskOverlay() {
     document.getElementById('board-add-task').classList.add('board-display-none');
     document.getElementById('board-add-task').parentNode.classList.add('board-display-none');
     document.getElementById('board-kanban').classList.remove('board-display-none-700px');
-    document.getElementById('board-add-task-assignee-picker').innerHTML = '';
     document.getElementById('board-add-task-subtasks').innerHTML = '';
 }
 
@@ -340,7 +339,7 @@ function boardIncludeAssignePickerOnTaskEditor() {
 
 function boardIncludeAssignePickerOnAddTask() {
 
-    let container = document.getElementById('board-add-task-assignee-picker');
+    // let container = document.getElementById('board-add-task-assignee-picker');
 
     container.innerHTML = boardTemplateAssigneePicker();
 }
@@ -370,10 +369,6 @@ function boardTemplateAssigneePicker() {
                 <div class="d-none task-more-content overflow-auto" id="moreContacts">
                     <div id="loggedInUserAddTask"></div>
                     <div id="loadedContacts"></div>
-
-                    <div class="dd-placeholder gray-hover">
-                        <div>Invite new contact</div>
-                    </div>
 
                 </div>
 
