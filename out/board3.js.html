@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: board3.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: board3.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Displays the "Add Task" overlay and initializes it with the selected progress.
+ *
+ * @param {string} progress - The progress status (e.g., 'todo', 'in-progress') for the new task.
+ *
+ * This function initializes variables for subtasks, renders categories and contacts,
+ * and shows the "Add Task" overlay. It hides the Kanban board if the screen width is below 700px.
+ */
+function boardShowAddtaskOverlay(progress) {
+    task.progress = progress;
+    subtasks = [];
+    subtaskStatus = [];
+    document.getElementById('board-add-task-subtasks').innerHTML = boardAddTaskTemplateSubtasks();
+    renderCategorys();
+    renderContacts();
+    document.getElementById('board-add-task').classList.remove('board-display-none');
+    document.getElementById('board-add-task').parentNode.classList.remove('board-display-none');
+    document.getElementById('board-kanban').classList.add('board-display-none-700px');
+    document.getElementById('contentAlignment').classList.add('board-overflow');
+}
+
+/**
+ * Hides the "Add Task" overlay and clears its content.
+ *
+ * This function hides the overlay for adding a task, clears any subtask inputs, and re-displays
+ * the Kanban board if it was hidden.
+ */
+function boardHideAddtaskOverlay() {
+    document.getElementById('board-add-task').classList.add('board-display-none');
+    document.getElementById('board-add-task').parentNode.classList.add('board-display-none');
+    document.getElementById('board-kanban').classList.remove('board-display-none-700px');
+    document.getElementById('board-add-task-subtasks').innerHTML = '';
+}
+
+/**
+ * Displays the task editor for the currently selected task and initializes the editor's fields.
+ *
+ * This function loads the current task data into the task editor, including priority, assignees,
+ * and subtasks. It hides the task detail view and shows the task editor.
+ */
+function boardShowTaskEditor() {
+    const task = database.tasks[boardCurrentTaskInDetailView];
+    taskEditorSelectedPrio = task.prio;
+    taskEditorRenderPrioButtons(task.prio);
+    taskEditorRenderData();
+    boardIncludeAssignePickerOnTaskEditor();
+    document.getElementById('board-detail-view-subtasks').innerHTML = '';
+    document.getElementById('board-task-editor-subtasks').innerHTML = boardTaskEditorTemplateSubtasks();
+    taskEditorInitAssigneePicker(task.assigned_to);
+    boardRenderSubtasks(task.subtasks, 'addetSubtasks');
+    document.getElementById('board-detail-view').classList.add('board-display-none');
+    document.getElementById('board-task-editor').classList.remove('board-display-none');
+}
+
+/**
+ * Initializes the assignee picker in the task editor with the current assignees.
+ *
+ * @param {Array} assignees - The list of assignees for the task.
+ *
+ * The function renders the contacts list and selects the current assignees for the task
+ * by matching names with the contacts database. It also sets up the contact picker UI.
+ */
+function taskEditorInitAssigneePicker(assignees) {
+    renderContacts();
+    taskContactList = [];
+    for (let i = 0; i &lt; assignees.length; i++) {
+        const assignee = assignees[i];
+        const firstname = assignee.substring(0, assignee.indexOf(' '));
+        const lastname = assignee.substring(assignee.indexOf(' ') + 1);
+        for (let j = 0; j &lt; database.contacts.length; j++) {
+            const contact = database.contacts[j];
+            if (firstname == contact.firstname &amp;&amp; lastname == contact.lastname) {
+                const id = `contacts[${j}]`;
+                selectedForTask(contact, id);
+            }
+        }
+    }
+    addContacts();
+    pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys');
+    document.getElementById('ddArrow').classList.remove('d-none');
+    document.getElementById('clearAddButtons').classList.add('d-none');
+}
+
+/**
+ * Hides the task editor and clears its content.
+ *
+ * This function hides the task editor, resets the assignee and subtask fields, and re-displays
+ * the Kanban board. It also recreates all event listeners.
+ */
+function boardHideTaskEditor() {
+    taskContactList = [];
+    document.getElementById('board-detail-view-subtasks').innerHTML = '';
+    document.getElementById('board-task-editor').parentNode.classList.add('board-display-none');
+    document.getElementById('board-task-editor').classList.add('board-display-none');
+    document.getElementById('board-kanban').classList.remove('board-display-none-700px');
+    document.getElementById('board-task-editor-assignee-picker').innerHTML = '';
+    document.getElementById('board-task-editor-subtasks').innerHTML = '';
+    boardCreateAllEventListeners();
+}
+
+/**
+ * Confirms and saves the changes made in the task editor to the current task.
+ *
+ * The function updates the task title, description, due date, and assignees, then hides the editor.
+ * It also re-renders the task cards and saves the updated task to the database.
+ */
+async function boardConfirmEditorChanges() {
+    const taskEditorTitle = replaceForbiddenCharacters(document.getElementById('task-editor-title').value);
+    const taskEditorDescription = replaceForbiddenCharacters(document.getElementById('task-editor-description').value);
+    const taskEditorDueDate = document.getElementById('task-editor-date').value;
+    database.tasks[boardCurrentTaskInDetailView].prio = taskEditorSelectedPrio;
+    database.tasks[boardCurrentTaskInDetailView].title = taskEditorTitle;
+    database.tasks[boardCurrentTaskInDetailView].description = taskEditorDescription;
+    database.tasks[boardCurrentTaskInDetailView].due_date = taskEditorDueDate;
+    taskEditorSaveContacts();
+    boardHideTaskEditor();
+    renderAllTaskCards();
+    boardCreateAllEventListeners();
+    await setItem('database', database);
+}
+
+/**
+ * Saves the selected assignees from the task editor to the task's `assigned_to` field.
+ *
+ * The function collects the selected assignees from `taskContactList` and updates
+ * the task with the new list of assigned contacts.
+ */
+function taskEditorSaveContacts() {
+    let newAssignees = [];
+    for (let i = 0; i &lt; taskContactList.length; i++) {
+        const contact = taskContactList[i];
+        const name = contact.firstname + ' ' + contact.lastname;
+        newAssignees.push(name);       
+    }
+    database.tasks[boardCurrentTaskInDetailView].assigned_to = newAssignees;
+}
+
+/**
+ * Renders the priority buttons in the task editor, highlighting the selected priority.
+ *
+ * @param {string} selectedPrio - The selected priority ('high', 'medium', or 'low').
+ *
+ * The function highlights the selected priority and resets the appearance of the other priority buttons.
+ */
+function taskEditorRenderPrioButtons(selectedPrio) {
+    taskEditorSelectedPrio = selectedPrio;
+    let prios = ['high', 'medium', 'low'];
+    const selectedIconId = `task-editor-prio-icon-${selectedPrio}`;
+    const index = prios.indexOf(selectedPrio);
+    prios.splice(index, 1);
+    for (let i = 0; i &lt; prios.length; i++) {
+        const unselectedPrio = prios[i];
+        const iconId = `task-editor-prio-icon-${unselectedPrio}`;
+        document.getElementById(iconId).parentNode.style = 'background-color:rgb(255, 255, 255)';
+        document.getElementById(iconId).parentNode.classList.add('board-cursor-pointer');
+        document.getElementById(iconId).src = `./assets/img/board/prio_${unselectedPrio}.svg`;
+    }
+    document.getElementById(selectedIconId).parentNode.style = 'color:rgb(255, 255, 255)';
+    document.getElementById(selectedIconId).parentNode.classList.remove('board-cursor-pointer');
+    document.getElementById(selectedIconId).src = `./assets/img/board/prio_${selectedPrio}_white.svg`;
+}
+
+/**
+ * Renders the task editor input fields with the current task data.
+ *
+ * This function populates the title, description, and due date fields in the task editor
+ * with the values from the current task.
+ */
+function taskEditorRenderData() {
+    const task = database.tasks[boardCurrentTaskInDetailView];
+    taskEditorRenderInputField('task-editor-title', task.title);
+    taskEditorRenderInputField('task-editor-description', task.description);
+    taskEditorRenderInputField('task-editor-date', task.due_date);
+}
+
+/**
+ * Renders the value of an input field in the task editor.
+ *
+ * @param {string} inputId - The ID of the input field to populate.
+ * @param {string} value - The value to set in the input field.
+ */
+function taskEditorRenderInputField(inputId, value) {
+    document.getElementById(inputId).value = value;
+}
+
+/**
+ * Renders the subtasks for the current task in the specified container.
+ *
+ * @param {Object} subtasks - The subtasks object containing names and statuses.
+ * @param {string} containerId - The ID of the container where the subtasks should be displayed.
+ *
+ * The function generates the HTML for each subtask, including its status and delete option, and displays them.
+ */
+function boardRenderSubtasks(subtasks, containerId) {
+    let html = '';
+    let container = document.getElementById(containerId);
+    if (subtasks.name.length == 0) {
+        html = 'No subtasks';
+    } else {
+        for (let i = 0; i &lt; subtasks.name.length; i++) {
+
+            html += taskEditorSubtaskTemplate(i, subtasks.name[i], subtasks.status[i], containerId);
+        }
+    }
+    container.innerHTML = html;
+}
+
+/**
+ * Generates the HTML template for a subtask in the task editor.
+ *
+ * @param {number} i - The index of the subtask.
+ * @param {string} name - The name of the subtask.
+ * @param {string} status - The completion status of the subtask ('true' or 'false').
+ * @param {string} containerId - The container ID where the subtask will be rendered.
+ * @returns {string} - The HTML string for the subtask.
+ */
+function taskEditorSubtaskTemplate(i, name, status, containerId) {
+    const html = /*html*/ `
+            &lt;div class="sub-task">
+            &lt;div onclick="taskEditorSetCheckbox(${i})" class="selectbox-subtask pointer">
+            &lt;img class="subtaskDone ${taskEditorGetSubtaskStatus(status)}" id="taskEditorCheckmark${i}" src="./assets/img/create_subtask.png">
+            &lt;/div>
+            &lt;div class="board-detail-view-subtask">${name}
+            &lt;img class="board-cursor-pointer" src="./assets/img/board/close.svg"
+            onclick="boardRemoveSubtask(${i}, '${containerId}')" alt="delete-icon">&lt;/div>
+            &lt;/div>`;
+    return html;
+}
+
+/**
+ * Removes a subtask from the current task and re-renders the subtasks.
+ *
+ * @param {number} i - The index of the subtask to remove.
+ * @param {string} containerId - The ID of the container where the subtasks are displayed.
+ *
+ * The function removes the selected subtask and updates the database, then re-renders the task cards.
+ */
+async function boardRemoveSubtask(i, containerId) {
+    database.tasks[boardCurrentTaskInDetailView].subtasks.name.splice(i, 1);
+    database.tasks[boardCurrentTaskInDetailView].subtasks.status.splice(i, 1);
+    boardRenderSubtasks(database.tasks[boardCurrentTaskInDetailView].subtasks, containerId);
+    renderAllTaskCards();
+    boardCreateAllEventListeners();
+    await setItem('database', database);
+}
+
+/**
+ * Toggles the completion status of a subtask in the task editor.
+ *
+ * @param {number} i - The index of the subtask to toggle.
+ *
+ * The function updates the subtask's status and re-renders the task cards to reflect the change.
+ */
+async function taskEditorSetCheckbox(i) {
+    const id = `taskEditorCheckmark${i}`;
+    if (database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] == 'false') {
+        document.getElementById(id).classList.remove('d-none');
+        database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] = 'true';
+    } else {
+        document.getElementById(id).classList.add('d-none');
+        database.tasks[boardCurrentTaskInDetailView].subtasks.status[i] = 'false';
+    }
+    renderAllTaskCards();
+    await setItem('database', database);
+}
+
+/**
+ * Returns the appropriate CSS class for the subtask based on its status.
+ *
+ * @param {string} status - The completion status of the subtask ('true' or 'false').
+ * @returns {string} - The CSS class to apply to the subtask checkmark ('d-none' if not completed).
+ */
+function taskEditorGetSubtaskStatus(status) {
+    if (status != 'true') {
+        return 'd-none';
+    }
+}
+
+/**
+ * Adds a new subtask to the current task in the task editor.
+ *
+ * The function retrieves the subtask input, validates it, and adds the new subtask to the task.
+ * It re-renders the subtasks and saves the updated task to the database.
+ */
+function taskEditorAddSubtask() {
+    const subtaskInput = replaceForbiddenCharacters(document.getElementById('subtaskInput').value);
+    if (subtaskInput) {
+        database.tasks[boardCurrentTaskInDetailView].subtasks.name.push(subtaskInput);
+        database.tasks[boardCurrentTaskInDetailView].subtasks.status.push('false');
+        boardRenderSubtasks(database.tasks[boardCurrentTaskInDetailView].subtasks, 'addetSubtasks');
+        document.getElementById('subtaskInput').value = '';
+        renderAllTaskCards();
+        boardCreateAllEventListeners();
+        setItem('database', database);
+    }
+}
+
+/**
+ * Replaces forbidden characters in a string with valid ones.
+ *
+ * @param {string} string - The string to sanitize.
+ * @returns {string} - The sanitized string with forbidden characters replaced by valid ones.
+ *
+ * The function replaces square brackets `{}`, `[]`, and quotes with parentheses.
+ */
+function replaceForbiddenCharacters(string) {
+    let validatedString = string.replace(/[\[{]/g, '(');
+    validatedString = validatedString.replace(/[\]}]/g, ')');
+    return validatedString;
+}
+
+/**
+ * Returns the HTML template for the subtasks section of the "Add Task" overlay.
+ *
+ * @returns {string} - The HTML template for the subtasks input and display section.
+ */
+function boardAddTaskTemplateSubtasks() {
+    return /*html*/ `
+        &lt;div class="padding-36-bottom">
+        &lt;div class="display-flex">
+            &lt;div class="padding-10-bottom padding-17-right">Subtasks&lt;/div>
+            &lt;div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+                ] "&lt;/div>
+        &lt;/div>
+        &lt;div class="task-white-box task-subtask-container" id="subtask">
+            &lt;input type="text" placeholder="Add new subtask" id="subtaskInput"
+                class="input-cat-sub no-outline" onclick="switchSubtaskIcons()">
+            &lt;div class="center" id="addSubtask">
+                &lt;img onclick="switchSubtaskIcons()" class="padding-17-right pointer"
+                    src="assets/img/add_subtask.png">
+            &lt;/div>
+            &lt;div class="center spcae-between clear-add-button-container padding-17-right d-none"
+                id="createSubtask">
+                &lt;img class="clear-input pointer" onclick="switchSubtaskIcons()"
+                    src="./assets/img/Clear_task_input.png">
+                &lt;div>|&lt;/div>
+                &lt;img id="board-button-submit-new-subtask" onclick="addSubtask()" class="pointer" src="./assets/img/create_subtask.png">
+            &lt;/div>
+        &lt;/div>
+        &lt;div id="addetSubtasks">&lt;/div>
+        &lt;/div>
+    `;
+}
+
+/**
+ * Returns the HTML template for the subtasks section of the task editor.
+ *
+ * @returns {string} - The HTML template for the subtasks input and display section in the editor.
+ */
+function boardTaskEditorTemplateSubtasks() {
+    return /*html*/ `
+        &lt;div class="padding-36-bottom">
+        &lt;div class="display-flex">
+            &lt;div class="padding-10-bottom padding-17-right">Subtasks&lt;/div>
+            &lt;div id="subTaskReport" class="report d-none">The following characters are not allowed { } [
+                ] "&lt;/div>
+        &lt;/div>
+        &lt;div class="task-white-box task-subtask-container" id="subtask">
+            &lt;input type="text" placeholder="Add new subtask" id="subtaskInput"
+                class="input-cat-sub no-outline" onclick="switchSubtaskIcons()">
+            &lt;div class="center" id="addSubtask">
+                &lt;img onclick="switchSubtaskIcons()" class="padding-17-right pointer"
+                    src="assets/img/add_subtask.png">
+            &lt;/div>
+            &lt;div class="center spcae-between clear-add-button-container padding-17-right d-none"
+                id="createSubtask">
+                &lt;img class="clear-input pointer" onclick="switchSubtaskIcons()"
+                    src="./assets/img/Clear_task_input.png">
+                &lt;div>|&lt;/div>
+                &lt;img id="board-button-submit-new-subtask" onclick="taskEditorAddSubtask()" class="pointer" src="./assets/img/create_subtask.png">
+            &lt;/div>
+        &lt;/div>
+        &lt;div id="addetSubtasks">&lt;/div>
+        &lt;/div>
+    `;
+}
+
+/**
+ * Includes the assignee picker template in the task editor.
+ *
+ * The function populates the task editor with the assignee picker UI.
+ */
+function boardIncludeAssignePickerOnTaskEditor() {
+    let container = document.getElementById('board-task-editor-assignee-picker');
+    container.innerHTML = boardTemplateAssigneePicker();
+}
+
+/**
+ * Returns the HTML template for the assignee picker.
+ *
+ * @returns {string} - The HTML template for the assignee picker UI, allowing contacts to be selected for the task.
+ */
+function boardTemplateAssigneePicker() {
+    return /*html*/ `
+        &lt;div>
+            &lt;div class="display-flex">
+                &lt;div class="padding-10-bottom padding-17-right">Assigned to&lt;/div>
+                &lt;div id="contactReport" class="report d-none">This field is required&lt;/div>
+            &lt;/div>
+
+            &lt;div class="dropdown-category-closed" id="assingedTo">
+
+                &lt;div onclick="pullDownMenu('assingedTo', 'category', 'moreContacts', 'moreCategorys')" class="dd-placeholder" id="contactsToAssingContainer">
+                    &lt;div>Contacts to assign&lt;/div>
+                    &lt;img id="ddArrow" src="assets/img/drop_down.png">
+
+                    &lt;div class="center spcae-between clear-add-button-container d-none" id="clearAddButtons">
+                        &lt;img class="clear-input pointer" onclick="clearContacts()" src="./assets/img/Clear_task_input.png">
+                        &lt;div>|&lt;/div>
+                        &lt;img onclick="addContacts()" class="pointer" src="./assets/img/create_subtask.png">
+                    &lt;/div>
+                &lt;/div>
+
+                &lt;div class="d-none task-more-content overflow-auto" id="moreContacts">
+                    &lt;div id="loggedInUserAddTask">&lt;/div>
+                    &lt;div id="loadedContacts">&lt;/div>
+
+                &lt;/div>
+
+            &lt;/div>
+        &lt;/div>
+        &lt;div class="task-initials-container" id="initialsContainer">&lt;/div>
+    `;
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#accountData">accountData</a></li><li><a href="global.html#activateAddTaskButton">activateAddTaskButton</a></li><li><a href="global.html#activatePhp">activatePhp</a></li><li><a href="global.html#activeInputfield">activeInputfield</a></li><li><a href="global.html#addCategory">addCategory</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addContacts">addContacts</a></li><li><a href="global.html#addHoverEffect">addHoverEffect</a></li><li><a href="global.html#addSelectedPoint">addSelectedPoint</a></li><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#boardAddTaskTemplateSubtasks">boardAddTaskTemplateSubtasks</a></li><li><a href="global.html#boardCheckForSubtasks">boardCheckForSubtasks</a></li><li><a href="global.html#boardColumnRouter">boardColumnRouter</a></li><li><a href="global.html#boardComputeOffsetY">boardComputeOffsetY</a></li><li><a href="global.html#boardConfirmEditorChanges">boardConfirmEditorChanges</a></li><li><a href="global.html#boardCreateAllEventListeners">boardCreateAllEventListeners</a></li><li><a href="global.html#boardCreateEventListenerMouse">boardCreateEventListenerMouse</a></li><li><a href="global.html#boardCreateEventListenerTouch">boardCreateEventListenerTouch</a></li><li><a href="global.html#boardDeleteTask">boardDeleteTask</a></li><li><a href="global.html#boardDetailViewAssignees">boardDetailViewAssignees</a></li><li><a href="global.html#boardDetailViewCategory">boardDetailViewCategory</a></li><li><a href="global.html#boardDetailViewDescription">boardDetailViewDescription</a></li><li><a href="global.html#boardDetailViewDueDate">boardDetailViewDueDate</a></li><li><a href="global.html#boardDetailViewPriorityTag">boardDetailViewPriorityTag</a></li><li><a href="global.html#boardDetailViewSubtasks">boardDetailViewSubtasks</a></li><li><a href="global.html#boardDetailViewTitle">boardDetailViewTitle</a></li><li><a href="global.html#boardFieldIncludes">boardFieldIncludes</a></li><li><a href="global.html#boardGetPrioColor">boardGetPrioColor</a></li><li><a href="global.html#boardGetShortenedDescription">boardGetShortenedDescription</a></li><li><a href="global.html#boardHandleDragging">boardHandleDragging</a></li><li><a href="global.html#boardHandleWindowResize">boardHandleWindowResize</a></li><li><a href="global.html#boardHideAddtaskOverlay">boardHideAddtaskOverlay</a></li><li><a href="global.html#boardHidePlaceholder">boardHidePlaceholder</a></li><li><a href="global.html#boardHideTaskDetails">boardHideTaskDetails</a></li><li><a href="global.html#boardHideTaskEditor">boardHideTaskEditor</a></li><li><a href="global.html#boardIncludeAssignePickerOnTaskEditor">boardIncludeAssignePickerOnTaskEditor</a></li><li><a href="global.html#boardInit">boardInit</a></li><li><a href="global.html#boardRemoveSubtask">boardRemoveSubtask</a></li><li><a href="global.html#boardRenderColumnPlaceholder">boardRenderColumnPlaceholder</a></li><li><a href="global.html#boardRenderDetailView">boardRenderDetailView</a></li><li><a href="global.html#boardRenderSubtasks">boardRenderSubtasks</a></li><li><a href="global.html#boardResetVariablesForDragging">boardResetVariablesForDragging</a></li><li><a href="global.html#boardSaveSearchResults">boardSaveSearchResults</a></li><li><a href="global.html#boardSearch">boardSearch</a></li><li><a href="global.html#boardSearchTask">boardSearchTask</a></li><li><a href="global.html#boardSetDropTargets">boardSetDropTargets</a></li><li><a href="global.html#boardSetMaximumDescriptionLength">boardSetMaximumDescriptionLength</a></li><li><a href="global.html#boardShowAddtaskOverlay">boardShowAddtaskOverlay</a></li><li><a href="global.html#boardShowPlaceholder">boardShowPlaceholder</a></li><li><a href="global.html#boardShowTaskDetails">boardShowTaskDetails</a></li><li><a href="global.html#boardShowTaskEditor">boardShowTaskEditor</a></li><li><a href="global.html#boardSubtasksProgress">boardSubtasksProgress</a></li><li><a href="global.html#boardSwitchResponsiveMode">boardSwitchResponsiveMode</a></li><li><a href="global.html#boardTaskEditorTemplateSubtasks">boardTaskEditorTemplateSubtasks</a></li><li><a href="global.html#boardTemplateAssigneePicker">boardTemplateAssigneePicker</a></li><li><a href="global.html#boardUpdateCoordinates">boardUpdateCoordinates</a></li><li><a href="global.html#boardUseSearchResults">boardUseSearchResults</a></li><li><a href="global.html#boardValidateSearchInput">boardValidateSearchInput</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeHeight">changeHeight</a></li><li><a href="global.html#changeMobileView">changeMobileView</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeScroll">changeScroll</a></li><li><a href="global.html#checkDragOverlapping">checkDragOverlapping</a></li><li><a href="global.html#checkDraggingOverDropContainer">checkDraggingOverDropContainer</a></li><li><a href="global.html#checkForAnimation">checkForAnimation</a></li><li><a href="global.html#checkForChangePassword">checkForChangePassword</a></li><li><a href="global.html#checkIfUserExists">checkIfUserExists</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkNewPassword">checkNewPassword</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearAllFields">clearAllFields</a></li><li><a href="global.html#clearContacts">clearContacts</a></li><li><a href="global.html#clearCreateCategory">clearCreateCategory</a></li><li><a href="global.html#clearSignUpInput">clearSignUpInput</a></li><li><a href="global.html#clickOutsideDropdownMenu">clickOutsideDropdownMenu</a></li><li><a href="global.html#closeContactOverlay">closeContactOverlay</a></li><li><a href="global.html#closeCreateCategory">closeCreateCategory</a></li><li><a href="global.html#closeDropDownMenu">closeDropDownMenu</a></li><li><a href="global.html#closeMenuIfClickedOutside">closeMenuIfClickedOutside</a></li><li><a href="global.html#closeMobileVersion">closeMobileVersion</a></li><li><a href="global.html#closeOverlayEdit">closeOverlayEdit</a></li><li><a href="global.html#collectAllInfos">collectAllInfos</a></li><li><a href="global.html#columnSetOffsetY">columnSetOffsetY</a></li><li><a href="global.html#contactColor">contactColor</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createInitials">createInitials</a></li><li><a href="global.html#datePicker">datePicker</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContatctsFromTask">deleteContatctsFromTask</a></li><li><a href="global.html#determineSubtasksProgress">determineSubtasksProgress</a></li><li><a href="global.html#disableAddTaskButton">disableAddTaskButton</a></li><li><a href="global.html#disableButton">disableButton</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emailSent">emailSent</a></li><li><a href="global.html#emailSentAnimation">emailSentAnimation</a></li><li><a href="global.html#fillInData">fillInData</a></li><li><a href="global.html#findUpcomingDate">findUpcomingDate</a></li><li><a href="global.html#formateDate">formateDate</a></li><li><a href="global.html#generateRandomColor">generateRandomColor</a></li><li><a href="global.html#getAssigneeColor">getAssigneeColor</a></li><li><a href="global.html#getAwaitingFeedback">getAwaitingFeedback</a></li><li><a href="global.html#getCategory">getCategory</a></li><li><a href="global.html#getCategoryColor">getCategoryColor</a></li><li><a href="global.html#getClass">getClass</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataLocalStorage">getDataLocalStorage</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getDescription">getDescription</a></li><li><a href="global.html#getDone">getDone</a></li><li><a href="global.html#getFirstLetters">getFirstLetters</a></li><li><a href="global.html#getForgotPwLink">getForgotPwLink</a></li><li><a href="global.html#getName">getName</a></li><li><a href="global.html#getPrio">getPrio</a></li><li><a href="global.html#getRandomColor">getRandomColor</a></li><li><a href="global.html#getRandomRGBColor">getRandomRGBColor</a></li><li><a href="global.html#getTaskPrioBoard">getTaskPrioBoard</a></li><li><a href="global.html#getTasksInProgress">getTasksInProgress</a></li><li><a href="global.html#getTimeOfDay">getTimeOfDay</a></li><li><a href="global.html#getTitle">getTitle</a></li><li><a href="global.html#getTodo">getTodo</a></li><li><a href="global.html#getUpcomingDeadline">getUpcomingDeadline</a></li><li><a href="global.html#getUrgent">getUrgent</a></li><li><a href="global.html#getUsername">getUsername</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleDropping">handleDropping</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#htmlTemplateAllAssignees">htmlTemplateAllAssignees</a></li><li><a href="global.html#htmlTemplateAssigneeIcon">htmlTemplateAssigneeIcon</a></li><li><a href="global.html#htmlTemplateDropContainersDesktop">htmlTemplateDropContainersDesktop</a></li><li><a href="global.html#htmlTemplateDropContainersMobile">htmlTemplateDropContainersMobile</a></li><li><a href="global.html#htmlTemplateMoreThan3Assignees">htmlTemplateMoreThan3Assignees</a></li><li><a href="global.html#htmlTemplateTaskCard">htmlTemplateTaskCard</a></li><li><a href="global.html#htmlTemplateUpTo3Assignees">htmlTemplateUpTo3Assignees</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initContact">initContact</a></li><li><a href="global.html#initLogin">initLogin</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTask">initTask</a></li><li><a href="global.html#isDraggedElementOverBoardColumn">isDraggedElementOverBoardColumn</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#openAddContact">openAddContact</a></li><li><a href="global.html#openContactDetails">openContactDetails</a></li><li><a href="global.html#openCreateCategory">openCreateCategory</a></li><li><a href="global.html#openDropDownMenu">openDropDownMenu</a></li><li><a href="global.html#openForgotPw">openForgotPw</a></li><li><a href="global.html#openGapInTaskColumn">openGapInTaskColumn</a></li><li><a href="global.html#openLogin">openLogin</a></li><li><a href="global.html#openMobileGreeting">openMobileGreeting</a></li><li><a href="global.html#openNewContactForm">openNewContactForm</a></li><li><a href="global.html#openRegister">openRegister</a></li><li><a href="global.html#openResetPw">openResetPw</a></li><li><a href="global.html#passwordReset">passwordReset</a></li><li><a href="global.html#priority">priority</a></li><li><a href="global.html#pullDownMenu">pullDownMenu</a></li><li><a href="global.html#pushCategoryInCategorys">pushCategoryInCategorys</a></li><li><a href="global.html#pushStatus">pushStatus</a></li><li><a href="global.html#pushSubtask">pushSubtask</a></li><li><a href="global.html#removeAddClearIcons">removeAddClearIcons</a></li><li><a href="global.html#removeContactColor">removeContactColor</a></li><li><a href="global.html#removeContactsForSubTask">removeContactsForSubTask</a></li><li><a href="global.html#removeHoverEffect">removeHoverEffect</a></li><li><a href="global.html#removeSelectedColor">removeSelectedColor</a></li><li><a href="global.html#removeSelectedPoint">removeSelectedPoint</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAllTaskCards">renderAllTaskCards</a></li><li><a href="global.html#renderBoardColumn">renderBoardColumn</a></li><li><a href="global.html#renderCategorys">renderCategorys</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsAfterCreate">renderContactsAfterCreate</a></li><li><a href="global.html#renderFirstLetter">renderFirstLetter</a></li><li><a href="global.html#renderInitials">renderInitials</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#renderloggedInUserinContactList">renderloggedInUserinContactList</a></li><li><a href="global.html#replaceForbiddenCharacters">replaceForbiddenCharacters</a></li><li><a href="global.html#resetAllGapsInColumns">resetAllGapsInColumns</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetPrioButtom">resetPrioButtom</a></li><li><a href="global.html#resetSubTasks">resetSubTasks</a></li><li><a href="global.html#resetWarnings">resetWarnings</a></li><li><a href="global.html#returnTemplateForDropContainers">returnTemplateForDropContainers</a></li><li><a href="global.html#rotateTaskCard">rotateTaskCard</a></li><li><a href="global.html#saveDatabase">saveDatabase</a></li><li><a href="global.html#saveEditedUser">saveEditedUser</a></li><li><a href="global.html#saveNewCategory">saveNewCategory</a></li><li><a href="global.html#searchContactwithEmail">searchContactwithEmail</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectedColor">selectedColor</a></li><li><a href="global.html#selectedForTask">selectedForTask</a></li><li><a href="global.html#sentMailToPhp">sentMailToPhp</a></li><li><a href="global.html#setAttribute">setAttribute</a></li><li><a href="global.html#setItemLocalStorage">setItemLocalStorage</a></li><li><a href="global.html#setOnclickForColorpicker">setOnclickForColorpicker</a></li><li><a href="global.html#setStatus">setStatus</a></li><li><a href="global.html#setTick">setTick</a></li><li><a href="global.html#showAddClearIcons">showAddClearIcons</a></li><li><a href="global.html#showPassword1">showPassword1</a></li><li><a href="global.html#sideMenuColor">sideMenuColor</a></li><li><a href="global.html#signUpUser">signUpUser</a></li><li><a href="global.html#startEventListener">startEventListener</a></li><li><a href="global.html#subtaskEventListener">subtaskEventListener</a></li><li><a href="global.html#switchContactIcons">switchContactIcons</a></li><li><a href="global.html#switchHtml">switchHtml</a></li><li><a href="global.html#switchPasswordPicture">switchPasswordPicture</a></li><li><a href="global.html#switchSubtaskIcons">switchSubtaskIcons</a></li><li><a href="global.html#taskEditorAddSubtask">taskEditorAddSubtask</a></li><li><a href="global.html#taskEditorGetSubtaskStatus">taskEditorGetSubtaskStatus</a></li><li><a href="global.html#taskEditorInitAssigneePicker">taskEditorInitAssigneePicker</a></li><li><a href="global.html#taskEditorRenderData">taskEditorRenderData</a></li><li><a href="global.html#taskEditorRenderInputField">taskEditorRenderInputField</a></li><li><a href="global.html#taskEditorRenderPrioButtons">taskEditorRenderPrioButtons</a></li><li><a href="global.html#taskEditorSaveContacts">taskEditorSaveContacts</a></li><li><a href="global.html#taskEditorSetCheckbox">taskEditorSetCheckbox</a></li><li><a href="global.html#taskEditorSubtaskTemplate">taskEditorSubtaskTemplate</a></li><li><a href="global.html#templateAddContactOverlay">templateAddContactOverlay</a></li><li><a href="global.html#templateContactDetails">templateContactDetails</a></li><li><a href="global.html#templateContactFirstLetters">templateContactFirstLetters</a></li><li><a href="global.html#templateContactList">templateContactList</a></li><li><a href="global.html#templateContactOverlayEdit">templateContactOverlayEdit</a></li><li><a href="global.html#updateContactSelection">updateContactSelection</a></li><li><a href="global.html#userCreatedSuccess">userCreatedSuccess</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#waitForAnimation">waitForAnimation</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Oct 15 2024 21:40:47 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

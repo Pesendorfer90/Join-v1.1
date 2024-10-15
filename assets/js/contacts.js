@@ -1,5 +1,4 @@
 let firstLetters = [];
-//let contacts = [];
 
 /**
  * This onload-function starts the most important functions.

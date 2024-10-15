@@ -104,10 +104,7 @@ function generateRandomColor() {
  * @param {string} event This is the active event
  */
 function activeInputfield(event) {
-    // Hole das aktuell aktive Element
     const activeInput = event.target;
-
-    // Überprüfe, ob das aktive Element ein Input-Feld ist
     if (activeInput.tagName === "INPUT") {
         if (event.type === "focus") {
             // Das Input-Feld hat den Fokus erhalten
@@ -132,12 +129,17 @@ function handleResize() {
     }
 }
 
-
+/**
+ * Disables a button for 2 seconds and then re-enables it.
+ *
+ * @param {string} buttonId - The ID of the button to be disabled.
+ *
+ * This function disables the button by setting its `disabled` attribute to `true`,
+ * then re-enables it after 2 seconds by setting `disabled` back to `false`.
+ */
 function disableButton(buttonId) {
     const button = document.getElementById(buttonId);
-
     button.disabled = true;
-
     setTimeout(() => {
         button.disabled = false;
     }, 2000);

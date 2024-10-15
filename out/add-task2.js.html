@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: add-task2.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: add-task2.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+
+
+/**
+ * This function starts an event listener that checks whether enter is pressed in the subtask input field.
+ */
+function subtaskEventListener() {
+    document.addEventListener('DOMContentLoaded', function () {
+        let subTaskInputField = document.getElementById('subtaskInput');
+        subTaskInputField.addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                addSubtask();
+            }
+        });
+    });
+}
+
+
+/**
+ * This function removes a subtask and subtask status and re-renders the remaining ones.
+ * @param {number} i - Index of subtask
+ */
+function removeSubtask(i) {
+    subtasks.splice(i, 1);
+    subtaskStatus.splice(i, 1);
+    renderSubtasks();
+}
+
+
+/**
+ * This function renders the subtasks.
+ */
+function renderSubtasks() {
+    let subtaskContainer = document.getElementById('addetSubtasks');
+    subtaskContainer.innerHTML = '';
+    for (let i = 0; i &lt; subtasks.length; i++) {
+        subtaskContainer.innerHTML += `&lt;div class="sub-task">
+            &lt;div onclick="setStatus('selectboxSubtask${i}', ${i})" class="selectbox-subtask pointer">
+            &lt;img class="subtaskDone ${getClass(i)}" id="selectboxSubtask${i}" src="assets/img/create_subtask.png">
+            &lt;/div>
+            &lt;div class="pointer" onclick="removeSubtask(${i}), ${i}">${subtasks[i]}&lt;/div>
+            &lt;/div>`
+    }
+}
+
+
+
+/**
+ * This function changes the class of the input field.
+ * If you click in the input field, add a subtask or press cancel,
+ * you will switch between 2 different views on the right side of the input field.
+ */
+function switchSubtaskIcons() {
+    let addSubtask = document.getElementById('addSubtask');
+    let createSubtask = document.getElementById('createSubtask');
+    let subtaskInput = document.getElementById('subtaskInput');
+    let createSubtaskClass = createSubtask.classList.value;
+    if (createSubtaskClass.includes('d-none') == true) {
+        showAddClearIcons(addSubtask, createSubtask, subtaskInput);
+    } else {
+        removeAddClearIcons(addSubtask, createSubtask, subtaskInput);
+    }
+}
+
+
+/**
+ * This function changes the classes of the input field, 
+ * focuses the input field and removes onclick.
+ * @param {string} addSubtask - ID of a button.
+ * @param {string} createSubtask - ID of a button container.
+ * @param {string} subtaskInput - ID of an input field.
+ */
+function showAddClearIcons(addSubtask, createSubtask, subtaskInput) {
+    subtaskInput.removeAttribute("onclick");
+    createSubtask.classList.remove('d-none');
+    addSubtask.classList.add('d-none');
+    subtaskInput.focus();
+}
+
+
+/**
+ * This function changes the classes of the input field,
+ * clears the value of the input field and removes the focus from the input field
+ * @param {string} addSubtask - ID of a button.
+ * @param {string} createSubtask - ID of a button container.
+ * @param {string} subtaskInput - ID of an input field.
+ */
+function removeAddClearIcons(addSubtask, createSubtask, subtaskInput) {
+    subtaskInput.setAttribute("onclick", "switchSubtaskIcons()");
+    createSubtask.classList.add('d-none');
+    addSubtask.classList.remove('d-none');
+    subtaskInput.blur();
+    subtaskInput.value = '';
+}
+
+
+/**
+ * This function checks whether a subtask is done or not and then returns the corresponding value.
+ * @param {number} i - Index of the subtask.
+ * @returns - CSS class or ''.
+ */
+function getClass(i) {
+    if (subtaskStatus[i] == 'true') {
+        return setClass = '';
+    } else {
+        return setClass = 'd-none';
+    }
+}
+
+
+/**
+ * If a subtask's checkbox is clicked,
+ * the CSS class 'd-none' will be removed or added and
+ * subTaskStatus is set to true or false at the correct index.
+ * @param {string} divID - ID of an div.
+ * @param {number} i - Index of the subtask.
+ */
+function setStatus(divID, i) {
+    if (subtaskStatus[i] == 'false') {
+        document.getElementById(divID).classList.remove('d-none');
+        subtaskStatus.splice(i, 1, 'true');
+    } else {
+        document.getElementById(divID).classList.add('d-none')
+        subtaskStatus.splice(i, 1, 'false');
+    }
+}
+
+
+/**
+ * This function opens an input field and a div with selectable random colors.
+ */
+function openCreateCategory() {
+    document.getElementById('newCategoryContainer').classList.remove('d-none');
+    document.getElementById('color-picker').classList.remove('d-none');
+    pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+    getRandomColor();
+    document.getElementById('category').classList.add('d-none');
+}
+
+
+/**
+ * This function removes an input field and a div with selectable random colors.
+ */
+function closeCreateCategory() {
+    document.getElementById('category').classList.remove('d-none');
+    document.getElementById('categoryPlaceholder').classList.remove('d-none');
+    document.getElementById('newCategoryContainer').classList.add('d-none');
+    document.getElementById('color-picker').classList.add('d-none');
+    // pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+    removeSelectedColor();
+}
+
+
+/**
+ * This function checks if an input field is empty and if a color has been selected.
+ * If both exist, a function is started.
+ */
+function addCategory() {
+    categoryInputFiled = document.getElementById('categoryInput');
+    newCategory = categoryInputFiled.value;
+    if (newCategory == '') {
+        alert('Please enter a new category name')
+    } else if (colorForNewCategory == undefined) {
+        alert('Please choose a color')
+    } else {
+        createCategory(categoryInputFiled);
+    }
+}
+
+
+/**
+ * This function saves a new category, empty and close an input field,
+ * select and shows the new category.
+ */
+function createCategory(categoryInputFiled) {
+    saveNewCategory();
+    categoryInputFiled.value = '';
+    closeCreateCategory();
+    selectCategory(newCategory, colorForNewCategory);
+}
+
+
+/**
+ * This function adds a rgb background color to div's.
+ */
+function getRandomColor() {
+    for (let index = 0; index &lt; 6; index++) {
+        generatedColor = generateRandomColor();
+        colorCircle = document.getElementById('colorPickCircle' + index);
+        colorCircle.style = `background-color: ${generatedColor}`;
+        setOnclickForColorpicker(colorCircle, generatedColor, index);
+    }
+}
+
+
+/**
+ * This function creates random colors.
+ * @returns random rgb numbers.
+ */
+function generateRandomColor() {
+    let r = Math.floor(Math.random() * 256);
+    let g = Math.floor(Math.random() * 256);
+    let b = Math.floor(Math.random() * 256);
+    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+}
+
+
+/**
+ * This function set a oncklick.
+ * @param {string} colorCircle - The ID of a div.
+ * @param {string} generatedColor - rgb code.
+ * @param {number} index - index of a div.
+ */
+function setOnclickForColorpicker(colorCircle, generatedColor, index) {
+    colorCircle.setAttribute("onclick", `selectedColor('${generatedColor}', 'colorPickCircle${index}')`);
+}
+
+
+/**
+ * This function gives an rgb code to one variable and an ID to another variable.
+ * Adds a class to the corresponding div to show the user what he clicked.
+ * @param {string} color - rgb code
+ * @param {string} id - The ID of the clicked div.
+ */
+function selectedColor(color, id) {
+    colorForNewCategory = `${color}`;
+    colorForNewCategoryID = id;
+    removeSelectedColor();
+    document.getElementById(id).classList.add('task-selected-category-color');
+}
+
+
+/**
+ * This function removes the CSS class 'task-selected-category-color'.
+ */
+function removeSelectedColor() {
+    for (let i = 0; i &lt; 6; i++) {
+        document.getElementById('colorPickCircle' + i).classList.remove('task-selected-category-color');
+    }
+}
+
+
+/**
+ * This function prepares a new category to be pushed into a JSON.
+ */
+function saveNewCategory() {
+    category = {
+        "name": `${newCategory}`,
+        "color": `${colorForNewCategory}`
+    };
+    pushCategoryInCategorys();
+}
+
+
+/**
+ * This function pushes a new category into the database array.
+ */
+async function pushCategoryInCategorys() {
+    categories.push(category);
+    renderCategorys();
+}
+
+
+/**
+ * This function gets the value from the input field,
+ * checks if it is empty and warns the user that this input field cannot be empty.
+ * @returns value from input field.
+ */
+function getTitle() {
+    let title = document.getElementById('tileInput').value;
+    if (title == '' || containsBrackets(title)) {
+        document.getElementById('titleReport').classList.remove('d-none');
+        required = true;
+    } else {
+        return title;
+    }
+}
+
+
+/**
+ * This function gets the value from the input field,
+ * checks if it is empty and warns the user that this input field cannot be empty.
+ * @returns value from input field.
+ */
+function getDescription() {
+    let description = document.getElementById('descriptionInput').value;
+    if (description == '' || containsBrackets(description)) {
+        document.getElementById('descriptionReport').classList.remove('d-none');
+        required = true;
+    } else {
+        return description;
+    }
+}
+
+
+/**
+ * This function checks the variable selectedCategory if it is empty and
+ * warns the user if no category is selected.
+ * @returns selected category
+ */
+function getCategory() {
+    if (selectedCategory == undefined) {
+        document.getElementById('categoryReport').classList.remove('d-none');
+        required = true;
+    } else {
+        return selectedCategory;
+    }
+}
+
+
+/**
+ * This function pushes all the names of the selected contacts in an array.
+ */
+function getName() {
+    taskContactList.forEach((ContactName) => {
+        fullName = ContactName.firstname + ' ' + ContactName.lastname;
+        collectedContact.push(fullName);
+    })
+
+}
+
+
+/**
+ * This function gets the value from the input field,
+ * checks if it is empty and warns the user that this input field cannot be empty.
+ * @returns value from input field.
+ */
+function getDate() {
+    let date_regex = /^(?:19|20)\d{2}-(?:0?[1-9]|1[0-2])-(?:0?[1-9]|[1-2][0-9]|3[0-1])$/;
+    let chosenDate = document.getElementById('date').value;
+    if (chosenDate == '' || !(date_regex.test(chosenDate))) {
+        document.getElementById('dateReport').classList.remove('d-none');
+        required = true;
+    } else {
+        return chosenDate;
+    }
+}
+
+
+/**
+ * This function checks the variable prio if it is empty and
+ * warns the user if no priority is selected.
+ * @returns 'urgent', 'medium' or 'low'
+ */
+function getPrio() {
+    if (prio == undefined) {
+        document.getElementById('prioReport').classList.remove('d-none');
+        required = true;
+    } else {
+        return prio;
+    }
+}
+
+/**
+ * This function pushes all subtasks into a JSON.
+ */
+function pushSubtask() {
+    for (let i = 0; i &lt; subtasks.length; i++) {
+        task.subtasks.name.push(subtasks[i]) || [];
+    }
+}
+
+/**
+ * This function pushes all subtask status into a JSON.
+ */
+function pushStatus() {
+    for (let i = 0; i &lt; subtaskStatus.length; i++) {
+        task.subtasks.status.push(subtaskStatus[i]);
+    }
+}
+
+
+/**
+ * The function collects information from various input fields and assigns them to a task object. 
+ * The function also includes some additional actions such as disabling a button,
+ * reactivating the button after a delay if any input is missing and saving everything to the database.
+ */
+function collectAllInfos() {
+    disableAddTaskButton();
+    getName();
+    task.title = getTitle();
+    task.description = getDescription();
+    task.category = getCategory();
+    task.assigned_to = collectedContact;
+    task.due_date = getDate();
+    task.prio = getPrio();
+    setTimeout(() => {
+        if (required == '') {
+            pushSubtask();
+            pushStatus();
+            saveDatabase()
+        } else {
+            activateAddTaskButton();
+            required = ''
+        }
+    }, 300)
+}
+
+
+/**
+ * This function disables the hover effect and the onclick on the add task button.
+ */
+function disableAddTaskButton() {
+    document.getElementById('mobileCreateTask').removeAttribute("onclick");
+    document.getElementById('desktopCreateTask').removeAttribute("onclick");
+    document.getElementById('desktopCreateTask').classList.remove("create-hover");
+}
+
+
+/**
+ * This function aktivates the hover effect and the onclick on the add task button.
+ */
+function activateAddTaskButton() {
+    document.getElementById('mobileCreateTask').setAttribute("onclick", `collectAllInfos()`);
+    document.getElementById('desktopCreateTask').setAttribute("onclick", `collectAllInfos()`);
+    document.getElementById('desktopCreateTask').classList.add("create-hover");
+}
+
+
+/**
+ * This function pushes the created task into the database.
+ * Starts the upload on the remote server and redirects the user to the summary page.
+ */
+async function saveDatabase() {
+    document.getElementById('addetToBoard').classList.add('addet-to-board-position-animate')
+    database.tasks.push(task);
+    await setItem('database', database);
+    setTimeout(() => {
+        window.location.replace('board.html')
+    }, 1500)
+}
+
+
+/**
+ * This function clears all input fields and selected fields.
+ */
+function clearAllFields() {
+    document.getElementById('tileInput').value = '';
+    document.getElementById('descriptionInput').value = '';
+    clearCreateCategory();
+    clearContacts();
+    document.getElementById('date').value = '';
+    resetPrioButtom();
+    resetSubTasks();
+    resetWarnings();
+}
+
+
+/**
+ * This function clears the selected field.
+ */
+function clearCreateCategory() {
+    document.getElementById('chosenCategory').innerHTML = `Select task category`
+    selectedCategory = category;
+    let classStatus = document.getElementById('category').classList
+    if (classStatus.contains('dropdown-category-open')) {
+        pullDownMenu('category', 'assingedTo', 'moreCategorys', 'moreContacts');
+    }
+}
+
+
+/**
+ * This function deletes all subtasks.
+ */
+function resetSubTasks() {
+    document.getElementById('subTaskReport').classList.add('d-none');
+    subtasks = [];
+    subtaskStatus = [];
+    renderSubtasks();
+}
+
+
+/**
+ * This function opens the add contact form.
+ */
+function openAddContact() {
+    openNewContactForm();
+    clearContacts();
+    renderContactsAfterCreate();
+
+}
+
+
+/**
+ * This function renders the contacts after creating a new contact.
+ */
+function renderContactsAfterCreate() {
+    document.getElementById("create-contact").addEventListener("click", function () {
+        setTimeout(clearContacts, 300);
+    });
+}
+
+
+/**
+ * This function clears the warnings.
+ */
+function resetWarnings() {
+    document.getElementById('titleReport').classList.add('d-none');
+    document.getElementById('descriptionReport').classList.add('d-none');
+    document.getElementById('categoryReport').classList.add('d-none');
+    document.getElementById('dateReport').classList.add('d-none');
+    document.getElementById('prioReport').classList.add('d-none');
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#accountData">accountData</a></li><li><a href="global.html#activateAddTaskButton">activateAddTaskButton</a></li><li><a href="global.html#activatePhp">activatePhp</a></li><li><a href="global.html#activeInputfield">activeInputfield</a></li><li><a href="global.html#addCategory">addCategory</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addContacts">addContacts</a></li><li><a href="global.html#addHoverEffect">addHoverEffect</a></li><li><a href="global.html#addSelectedPoint">addSelectedPoint</a></li><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#boardAddTaskTemplateSubtasks">boardAddTaskTemplateSubtasks</a></li><li><a href="global.html#boardCheckForSubtasks">boardCheckForSubtasks</a></li><li><a href="global.html#boardColumnRouter">boardColumnRouter</a></li><li><a href="global.html#boardComputeOffsetY">boardComputeOffsetY</a></li><li><a href="global.html#boardConfirmEditorChanges">boardConfirmEditorChanges</a></li><li><a href="global.html#boardCreateAllEventListeners">boardCreateAllEventListeners</a></li><li><a href="global.html#boardCreateEventListenerMouse">boardCreateEventListenerMouse</a></li><li><a href="global.html#boardCreateEventListenerTouch">boardCreateEventListenerTouch</a></li><li><a href="global.html#boardDeleteTask">boardDeleteTask</a></li><li><a href="global.html#boardDetailViewAssignees">boardDetailViewAssignees</a></li><li><a href="global.html#boardDetailViewCategory">boardDetailViewCategory</a></li><li><a href="global.html#boardDetailViewDescription">boardDetailViewDescription</a></li><li><a href="global.html#boardDetailViewDueDate">boardDetailViewDueDate</a></li><li><a href="global.html#boardDetailViewPriorityTag">boardDetailViewPriorityTag</a></li><li><a href="global.html#boardDetailViewSubtasks">boardDetailViewSubtasks</a></li><li><a href="global.html#boardDetailViewTitle">boardDetailViewTitle</a></li><li><a href="global.html#boardFieldIncludes">boardFieldIncludes</a></li><li><a href="global.html#boardGetPrioColor">boardGetPrioColor</a></li><li><a href="global.html#boardGetShortenedDescription">boardGetShortenedDescription</a></li><li><a href="global.html#boardHandleDragging">boardHandleDragging</a></li><li><a href="global.html#boardHandleWindowResize">boardHandleWindowResize</a></li><li><a href="global.html#boardHideAddtaskOverlay">boardHideAddtaskOverlay</a></li><li><a href="global.html#boardHidePlaceholder">boardHidePlaceholder</a></li><li><a href="global.html#boardHideTaskDetails">boardHideTaskDetails</a></li><li><a href="global.html#boardHideTaskEditor">boardHideTaskEditor</a></li><li><a href="global.html#boardIncludeAssignePickerOnTaskEditor">boardIncludeAssignePickerOnTaskEditor</a></li><li><a href="global.html#boardInit">boardInit</a></li><li><a href="global.html#boardRemoveSubtask">boardRemoveSubtask</a></li><li><a href="global.html#boardRenderColumnPlaceholder">boardRenderColumnPlaceholder</a></li><li><a href="global.html#boardRenderDetailView">boardRenderDetailView</a></li><li><a href="global.html#boardRenderSubtasks">boardRenderSubtasks</a></li><li><a href="global.html#boardResetVariablesForDragging">boardResetVariablesForDragging</a></li><li><a href="global.html#boardSaveSearchResults">boardSaveSearchResults</a></li><li><a href="global.html#boardSearch">boardSearch</a></li><li><a href="global.html#boardSearchTask">boardSearchTask</a></li><li><a href="global.html#boardSetDropTargets">boardSetDropTargets</a></li><li><a href="global.html#boardSetMaximumDescriptionLength">boardSetMaximumDescriptionLength</a></li><li><a href="global.html#boardShowAddtaskOverlay">boardShowAddtaskOverlay</a></li><li><a href="global.html#boardShowPlaceholder">boardShowPlaceholder</a></li><li><a href="global.html#boardShowTaskDetails">boardShowTaskDetails</a></li><li><a href="global.html#boardShowTaskEditor">boardShowTaskEditor</a></li><li><a href="global.html#boardSubtasksProgress">boardSubtasksProgress</a></li><li><a href="global.html#boardSwitchResponsiveMode">boardSwitchResponsiveMode</a></li><li><a href="global.html#boardTaskEditorTemplateSubtasks">boardTaskEditorTemplateSubtasks</a></li><li><a href="global.html#boardTemplateAssigneePicker">boardTemplateAssigneePicker</a></li><li><a href="global.html#boardUpdateCoordinates">boardUpdateCoordinates</a></li><li><a href="global.html#boardUseSearchResults">boardUseSearchResults</a></li><li><a href="global.html#boardValidateSearchInput">boardValidateSearchInput</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeHeight">changeHeight</a></li><li><a href="global.html#changeMobileView">changeMobileView</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeScroll">changeScroll</a></li><li><a href="global.html#checkDragOverlapping">checkDragOverlapping</a></li><li><a href="global.html#checkDraggingOverDropContainer">checkDraggingOverDropContainer</a></li><li><a href="global.html#checkForAnimation">checkForAnimation</a></li><li><a href="global.html#checkForChangePassword">checkForChangePassword</a></li><li><a href="global.html#checkIfUserExists">checkIfUserExists</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkNewPassword">checkNewPassword</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearAllFields">clearAllFields</a></li><li><a href="global.html#clearContacts">clearContacts</a></li><li><a href="global.html#clearCreateCategory">clearCreateCategory</a></li><li><a href="global.html#clearSignUpInput">clearSignUpInput</a></li><li><a href="global.html#clickOutsideDropdownMenu">clickOutsideDropdownMenu</a></li><li><a href="global.html#closeContactOverlay">closeContactOverlay</a></li><li><a href="global.html#closeCreateCategory">closeCreateCategory</a></li><li><a href="global.html#closeDropDownMenu">closeDropDownMenu</a></li><li><a href="global.html#closeMenuIfClickedOutside">closeMenuIfClickedOutside</a></li><li><a href="global.html#closeMobileVersion">closeMobileVersion</a></li><li><a href="global.html#closeOverlayEdit">closeOverlayEdit</a></li><li><a href="global.html#collectAllInfos">collectAllInfos</a></li><li><a href="global.html#columnSetOffsetY">columnSetOffsetY</a></li><li><a href="global.html#contactColor">contactColor</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createInitials">createInitials</a></li><li><a href="global.html#datePicker">datePicker</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContatctsFromTask">deleteContatctsFromTask</a></li><li><a href="global.html#determineSubtasksProgress">determineSubtasksProgress</a></li><li><a href="global.html#disableAddTaskButton">disableAddTaskButton</a></li><li><a href="global.html#disableButton">disableButton</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emailSent">emailSent</a></li><li><a href="global.html#emailSentAnimation">emailSentAnimation</a></li><li><a href="global.html#fillInData">fillInData</a></li><li><a href="global.html#findUpcomingDate">findUpcomingDate</a></li><li><a href="global.html#formateDate">formateDate</a></li><li><a href="global.html#generateRandomColor">generateRandomColor</a></li><li><a href="global.html#getAssigneeColor">getAssigneeColor</a></li><li><a href="global.html#getAwaitingFeedback">getAwaitingFeedback</a></li><li><a href="global.html#getCategory">getCategory</a></li><li><a href="global.html#getCategoryColor">getCategoryColor</a></li><li><a href="global.html#getClass">getClass</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataLocalStorage">getDataLocalStorage</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getDescription">getDescription</a></li><li><a href="global.html#getDone">getDone</a></li><li><a href="global.html#getFirstLetters">getFirstLetters</a></li><li><a href="global.html#getForgotPwLink">getForgotPwLink</a></li><li><a href="global.html#getName">getName</a></li><li><a href="global.html#getPrio">getPrio</a></li><li><a href="global.html#getRandomColor">getRandomColor</a></li><li><a href="global.html#getRandomRGBColor">getRandomRGBColor</a></li><li><a href="global.html#getTaskPrioBoard">getTaskPrioBoard</a></li><li><a href="global.html#getTasksInProgress">getTasksInProgress</a></li><li><a href="global.html#getTimeOfDay">getTimeOfDay</a></li><li><a href="global.html#getTitle">getTitle</a></li><li><a href="global.html#getTodo">getTodo</a></li><li><a href="global.html#getUpcomingDeadline">getUpcomingDeadline</a></li><li><a href="global.html#getUrgent">getUrgent</a></li><li><a href="global.html#getUsername">getUsername</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleDropping">handleDropping</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#htmlTemplateAllAssignees">htmlTemplateAllAssignees</a></li><li><a href="global.html#htmlTemplateAssigneeIcon">htmlTemplateAssigneeIcon</a></li><li><a href="global.html#htmlTemplateDropContainersDesktop">htmlTemplateDropContainersDesktop</a></li><li><a href="global.html#htmlTemplateDropContainersMobile">htmlTemplateDropContainersMobile</a></li><li><a href="global.html#htmlTemplateMoreThan3Assignees">htmlTemplateMoreThan3Assignees</a></li><li><a href="global.html#htmlTemplateTaskCard">htmlTemplateTaskCard</a></li><li><a href="global.html#htmlTemplateUpTo3Assignees">htmlTemplateUpTo3Assignees</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initContact">initContact</a></li><li><a href="global.html#initLogin">initLogin</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTask">initTask</a></li><li><a href="global.html#isDraggedElementOverBoardColumn">isDraggedElementOverBoardColumn</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#openAddContact">openAddContact</a></li><li><a href="global.html#openContactDetails">openContactDetails</a></li><li><a href="global.html#openCreateCategory">openCreateCategory</a></li><li><a href="global.html#openDropDownMenu">openDropDownMenu</a></li><li><a href="global.html#openForgotPw">openForgotPw</a></li><li><a href="global.html#openGapInTaskColumn">openGapInTaskColumn</a></li><li><a href="global.html#openLogin">openLogin</a></li><li><a href="global.html#openMobileGreeting">openMobileGreeting</a></li><li><a href="global.html#openNewContactForm">openNewContactForm</a></li><li><a href="global.html#openRegister">openRegister</a></li><li><a href="global.html#openResetPw">openResetPw</a></li><li><a href="global.html#passwordReset">passwordReset</a></li><li><a href="global.html#priority">priority</a></li><li><a href="global.html#pullDownMenu">pullDownMenu</a></li><li><a href="global.html#pushCategoryInCategorys">pushCategoryInCategorys</a></li><li><a href="global.html#pushStatus">pushStatus</a></li><li><a href="global.html#pushSubtask">pushSubtask</a></li><li><a href="global.html#removeAddClearIcons">removeAddClearIcons</a></li><li><a href="global.html#removeContactColor">removeContactColor</a></li><li><a href="global.html#removeContactsForSubTask">removeContactsForSubTask</a></li><li><a href="global.html#removeHoverEffect">removeHoverEffect</a></li><li><a href="global.html#removeSelectedColor">removeSelectedColor</a></li><li><a href="global.html#removeSelectedPoint">removeSelectedPoint</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAllTaskCards">renderAllTaskCards</a></li><li><a href="global.html#renderBoardColumn">renderBoardColumn</a></li><li><a href="global.html#renderCategorys">renderCategorys</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsAfterCreate">renderContactsAfterCreate</a></li><li><a href="global.html#renderFirstLetter">renderFirstLetter</a></li><li><a href="global.html#renderInitials">renderInitials</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#renderloggedInUserinContactList">renderloggedInUserinContactList</a></li><li><a href="global.html#replaceForbiddenCharacters">replaceForbiddenCharacters</a></li><li><a href="global.html#resetAllGapsInColumns">resetAllGapsInColumns</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetPrioButtom">resetPrioButtom</a></li><li><a href="global.html#resetSubTasks">resetSubTasks</a></li><li><a href="global.html#resetWarnings">resetWarnings</a></li><li><a href="global.html#returnTemplateForDropContainers">returnTemplateForDropContainers</a></li><li><a href="global.html#rotateTaskCard">rotateTaskCard</a></li><li><a href="global.html#saveDatabase">saveDatabase</a></li><li><a href="global.html#saveEditedUser">saveEditedUser</a></li><li><a href="global.html#saveNewCategory">saveNewCategory</a></li><li><a href="global.html#searchContactwithEmail">searchContactwithEmail</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectedColor">selectedColor</a></li><li><a href="global.html#selectedForTask">selectedForTask</a></li><li><a href="global.html#sentMailToPhp">sentMailToPhp</a></li><li><a href="global.html#setAttribute">setAttribute</a></li><li><a href="global.html#setItemLocalStorage">setItemLocalStorage</a></li><li><a href="global.html#setOnclickForColorpicker">setOnclickForColorpicker</a></li><li><a href="global.html#setStatus">setStatus</a></li><li><a href="global.html#setTick">setTick</a></li><li><a href="global.html#showAddClearIcons">showAddClearIcons</a></li><li><a href="global.html#showPassword1">showPassword1</a></li><li><a href="global.html#sideMenuColor">sideMenuColor</a></li><li><a href="global.html#signUpUser">signUpUser</a></li><li><a href="global.html#startEventListener">startEventListener</a></li><li><a href="global.html#subtaskEventListener">subtaskEventListener</a></li><li><a href="global.html#switchContactIcons">switchContactIcons</a></li><li><a href="global.html#switchHtml">switchHtml</a></li><li><a href="global.html#switchPasswordPicture">switchPasswordPicture</a></li><li><a href="global.html#switchSubtaskIcons">switchSubtaskIcons</a></li><li><a href="global.html#taskEditorAddSubtask">taskEditorAddSubtask</a></li><li><a href="global.html#taskEditorGetSubtaskStatus">taskEditorGetSubtaskStatus</a></li><li><a href="global.html#taskEditorInitAssigneePicker">taskEditorInitAssigneePicker</a></li><li><a href="global.html#taskEditorRenderData">taskEditorRenderData</a></li><li><a href="global.html#taskEditorRenderInputField">taskEditorRenderInputField</a></li><li><a href="global.html#taskEditorRenderPrioButtons">taskEditorRenderPrioButtons</a></li><li><a href="global.html#taskEditorSaveContacts">taskEditorSaveContacts</a></li><li><a href="global.html#taskEditorSetCheckbox">taskEditorSetCheckbox</a></li><li><a href="global.html#taskEditorSubtaskTemplate">taskEditorSubtaskTemplate</a></li><li><a href="global.html#templateAddContactOverlay">templateAddContactOverlay</a></li><li><a href="global.html#templateContactDetails">templateContactDetails</a></li><li><a href="global.html#templateContactFirstLetters">templateContactFirstLetters</a></li><li><a href="global.html#templateContactList">templateContactList</a></li><li><a href="global.html#templateContactOverlayEdit">templateContactOverlayEdit</a></li><li><a href="global.html#updateContactSelection">updateContactSelection</a></li><li><a href="global.html#userCreatedSuccess">userCreatedSuccess</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#waitForAnimation">waitForAnimation</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Oct 15 2024 21:40:47 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

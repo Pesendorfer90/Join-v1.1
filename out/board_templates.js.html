@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: board_templates.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: board_templates.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Returns the appropriate HTML template for drop containers based on the window width.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for either desktop or mobile view.
+ *
+ * The function checks the window width. If it's greater than 700 pixels, it returns the
+ * desktop template by calling `htmlTemplateDropContainersDesktop`. Otherwise, it returns
+ * the mobile template by calling `htmlTemplateDropContainersMobile`.
+ */
+function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth > 700) {
+
+        return htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount);
+        
+    } else {
+
+        return htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount);
+    }
+}
+
+
+/**
+ * Generates the HTML template for drop containers in the desktop view.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for the drop containers.
+ *
+ * The function loops through the tasks in the column, creating containers and drop targets
+ * with specific styles for the first container and target.
+ */
+
+function htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount) {
+
+    let firstContainerSpecialStyle = ' style="height:253px"';
+    let firstTargetSpecialStyle = ' style="margin:0"';
+    let html = '';
+
+    for (let i = 0; i &lt; (currentColumnTaskCount + 1); i++) {
+
+        const containerId = `${columnId}-drop-container-${i}`;
+        const targetId = `${columnId}-drop-target-${i}`;
+
+        html += /*html*/ `
+
+        &lt;div id="${containerId}" class="board-drop-container"${firstContainerSpecialStyle}>
+            &lt;div id="${targetId}" class="board-drop-target board-display-none"${firstTargetSpecialStyle}>&lt;/div>
+        &lt;/div>
+        `;
+
+        firstContainerSpecialStyle = '';
+        firstTargetSpecialStyle = '';
+    }
+    return html;
+}
+
+/**
+ * Generates the HTML template for drop containers in the mobile view.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for the drop containers.
+ *
+ * The function creates containers and drop targets for each task, with special styling for the
+ * first container. It also appends an extra container at the end with a different height.
+ */
+
+function htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount) {
+
+    let firstContainerSpecialStyle = ' style="height:253px"';
+    let firstTargetSpecialStyle = 'margin:0;';
+    let html = '';
+    let containerId = `${columnId}-drop-container-0`;
+    let targetId = `${columnId}-drop-target-0`;
+
+
+    for (let i = 0; i &lt; (currentColumnTaskCount); i++) {
+
+
+        html += /*html*/ `
+        &lt;div id="${containerId}" class="board-drop-container"${firstContainerSpecialStyle}>
+            &lt;div id="${targetId}" class="board-drop-target board-display-none" style="${firstTargetSpecialStyle}">&lt;/div>
+        &lt;/div>
+        `;
+        
+        containerId = `${columnId}-drop-container-${i + 1}`;
+        targetId = `${columnId}-drop-target-${i + 1}`;
+        firstContainerSpecialStyle = '';
+        firstTargetSpecialStyle = '';
+    }
+
+    html += /*html*/ `
+    &lt;div id="${containerId}" class="board-drop-container" style="height:80px">
+        &lt;div id="${targetId}" class="board-drop-target board-display-none" style="height:76px; ${firstTargetSpecialStyle}">&lt;/div>
+    &lt;/div>
+    `;
+
+    return html;
+}
+
+/**
+ * Renders a placeholder in the column if it is empty and no search is active.
+ *
+ * @param {string} id - The unique ID for the placeholder.
+ * @param {HTMLElement} container - The DOM element where the placeholder will be rendered.
+ * @param {boolean} columnEmpty - A flag indicating if the column is empty.
+ * @param {boolean} newBoardSearch - A flag indicating if a new search is active.
+ *
+ * If the column is empty and no search is active, a "No tasks to do" placeholder is added to the column.
+ */
+
+function boardRenderColumnPlaceholder(id, container, columnEmpty, newBoardSearch) {
+
+    if (columnEmpty == true &amp;&amp; newBoardSearch != true) {
+
+        container.innerHTML += /*html*/ `
+        &lt;div id="${id}-placeholder" class="board-kanban-column-placeholder">No tasks to do&lt;/div> `;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#accountData">accountData</a></li><li><a href="global.html#activateAddTaskButton">activateAddTaskButton</a></li><li><a href="global.html#activatePhp">activatePhp</a></li><li><a href="global.html#activeInputfield">activeInputfield</a></li><li><a href="global.html#addCategory">addCategory</a></li><li><a href="global.html#addContact">addContact</a></li><li><a href="global.html#addContacts">addContacts</a></li><li><a href="global.html#addHoverEffect">addHoverEffect</a></li><li><a href="global.html#addSelectedPoint">addSelectedPoint</a></li><li><a href="global.html#addSubtask">addSubtask</a></li><li><a href="global.html#boardAddTaskTemplateSubtasks">boardAddTaskTemplateSubtasks</a></li><li><a href="global.html#boardCheckForSubtasks">boardCheckForSubtasks</a></li><li><a href="global.html#boardColumnRouter">boardColumnRouter</a></li><li><a href="global.html#boardComputeOffsetY">boardComputeOffsetY</a></li><li><a href="global.html#boardConfirmEditorChanges">boardConfirmEditorChanges</a></li><li><a href="global.html#boardCreateAllEventListeners">boardCreateAllEventListeners</a></li><li><a href="global.html#boardCreateEventListenerMouse">boardCreateEventListenerMouse</a></li><li><a href="global.html#boardCreateEventListenerTouch">boardCreateEventListenerTouch</a></li><li><a href="global.html#boardDeleteTask">boardDeleteTask</a></li><li><a href="global.html#boardDetailViewAssignees">boardDetailViewAssignees</a></li><li><a href="global.html#boardDetailViewCategory">boardDetailViewCategory</a></li><li><a href="global.html#boardDetailViewDescription">boardDetailViewDescription</a></li><li><a href="global.html#boardDetailViewDueDate">boardDetailViewDueDate</a></li><li><a href="global.html#boardDetailViewPriorityTag">boardDetailViewPriorityTag</a></li><li><a href="global.html#boardDetailViewSubtasks">boardDetailViewSubtasks</a></li><li><a href="global.html#boardDetailViewTitle">boardDetailViewTitle</a></li><li><a href="global.html#boardFieldIncludes">boardFieldIncludes</a></li><li><a href="global.html#boardGetPrioColor">boardGetPrioColor</a></li><li><a href="global.html#boardGetShortenedDescription">boardGetShortenedDescription</a></li><li><a href="global.html#boardHandleDragging">boardHandleDragging</a></li><li><a href="global.html#boardHandleWindowResize">boardHandleWindowResize</a></li><li><a href="global.html#boardHideAddtaskOverlay">boardHideAddtaskOverlay</a></li><li><a href="global.html#boardHidePlaceholder">boardHidePlaceholder</a></li><li><a href="global.html#boardHideTaskDetails">boardHideTaskDetails</a></li><li><a href="global.html#boardHideTaskEditor">boardHideTaskEditor</a></li><li><a href="global.html#boardIncludeAssignePickerOnTaskEditor">boardIncludeAssignePickerOnTaskEditor</a></li><li><a href="global.html#boardInit">boardInit</a></li><li><a href="global.html#boardRemoveSubtask">boardRemoveSubtask</a></li><li><a href="global.html#boardRenderColumnPlaceholder">boardRenderColumnPlaceholder</a></li><li><a href="global.html#boardRenderDetailView">boardRenderDetailView</a></li><li><a href="global.html#boardRenderSubtasks">boardRenderSubtasks</a></li><li><a href="global.html#boardResetVariablesForDragging">boardResetVariablesForDragging</a></li><li><a href="global.html#boardSaveSearchResults">boardSaveSearchResults</a></li><li><a href="global.html#boardSearch">boardSearch</a></li><li><a href="global.html#boardSearchTask">boardSearchTask</a></li><li><a href="global.html#boardSetDropTargets">boardSetDropTargets</a></li><li><a href="global.html#boardSetMaximumDescriptionLength">boardSetMaximumDescriptionLength</a></li><li><a href="global.html#boardShowAddtaskOverlay">boardShowAddtaskOverlay</a></li><li><a href="global.html#boardShowPlaceholder">boardShowPlaceholder</a></li><li><a href="global.html#boardShowTaskDetails">boardShowTaskDetails</a></li><li><a href="global.html#boardShowTaskEditor">boardShowTaskEditor</a></li><li><a href="global.html#boardSubtasksProgress">boardSubtasksProgress</a></li><li><a href="global.html#boardSwitchResponsiveMode">boardSwitchResponsiveMode</a></li><li><a href="global.html#boardTaskEditorTemplateSubtasks">boardTaskEditorTemplateSubtasks</a></li><li><a href="global.html#boardTemplateAssigneePicker">boardTemplateAssigneePicker</a></li><li><a href="global.html#boardUpdateCoordinates">boardUpdateCoordinates</a></li><li><a href="global.html#boardUseSearchResults">boardUseSearchResults</a></li><li><a href="global.html#boardValidateSearchInput">boardValidateSearchInput</a></li><li><a href="global.html#changeColor">changeColor</a></li><li><a href="global.html#changeHeight">changeHeight</a></li><li><a href="global.html#changeMobileView">changeMobileView</a></li><li><a href="global.html#changePassword">changePassword</a></li><li><a href="global.html#changeScroll">changeScroll</a></li><li><a href="global.html#checkDragOverlapping">checkDragOverlapping</a></li><li><a href="global.html#checkDraggingOverDropContainer">checkDraggingOverDropContainer</a></li><li><a href="global.html#checkForAnimation">checkForAnimation</a></li><li><a href="global.html#checkForChangePassword">checkForChangePassword</a></li><li><a href="global.html#checkIfUserExists">checkIfUserExists</a></li><li><a href="global.html#checkLogin">checkLogin</a></li><li><a href="global.html#checkNewPassword">checkNewPassword</a></li><li><a href="global.html#checkScreenSize">checkScreenSize</a></li><li><a href="global.html#clearAllFields">clearAllFields</a></li><li><a href="global.html#clearContacts">clearContacts</a></li><li><a href="global.html#clearCreateCategory">clearCreateCategory</a></li><li><a href="global.html#clearSignUpInput">clearSignUpInput</a></li><li><a href="global.html#clickOutsideDropdownMenu">clickOutsideDropdownMenu</a></li><li><a href="global.html#closeContactOverlay">closeContactOverlay</a></li><li><a href="global.html#closeCreateCategory">closeCreateCategory</a></li><li><a href="global.html#closeDropDownMenu">closeDropDownMenu</a></li><li><a href="global.html#closeMenuIfClickedOutside">closeMenuIfClickedOutside</a></li><li><a href="global.html#closeMobileVersion">closeMobileVersion</a></li><li><a href="global.html#closeOverlayEdit">closeOverlayEdit</a></li><li><a href="global.html#collectAllInfos">collectAllInfos</a></li><li><a href="global.html#columnSetOffsetY">columnSetOffsetY</a></li><li><a href="global.html#contactColor">contactColor</a></li><li><a href="global.html#createCategory">createCategory</a></li><li><a href="global.html#createInitials">createInitials</a></li><li><a href="global.html#datePicker">datePicker</a></li><li><a href="global.html#deleteContact">deleteContact</a></li><li><a href="global.html#deleteContatctsFromTask">deleteContatctsFromTask</a></li><li><a href="global.html#determineSubtasksProgress">determineSubtasksProgress</a></li><li><a href="global.html#disableAddTaskButton">disableAddTaskButton</a></li><li><a href="global.html#disableButton">disableButton</a></li><li><a href="global.html#editContact">editContact</a></li><li><a href="global.html#emailSent">emailSent</a></li><li><a href="global.html#emailSentAnimation">emailSentAnimation</a></li><li><a href="global.html#fillInData">fillInData</a></li><li><a href="global.html#findUpcomingDate">findUpcomingDate</a></li><li><a href="global.html#formateDate">formateDate</a></li><li><a href="global.html#generateRandomColor">generateRandomColor</a></li><li><a href="global.html#getAssigneeColor">getAssigneeColor</a></li><li><a href="global.html#getAwaitingFeedback">getAwaitingFeedback</a></li><li><a href="global.html#getCategory">getCategory</a></li><li><a href="global.html#getCategoryColor">getCategoryColor</a></li><li><a href="global.html#getClass">getClass</a></li><li><a href="global.html#getData">getData</a></li><li><a href="global.html#getDataLocalStorage">getDataLocalStorage</a></li><li><a href="global.html#getDate">getDate</a></li><li><a href="global.html#getDescription">getDescription</a></li><li><a href="global.html#getDone">getDone</a></li><li><a href="global.html#getFirstLetters">getFirstLetters</a></li><li><a href="global.html#getForgotPwLink">getForgotPwLink</a></li><li><a href="global.html#getName">getName</a></li><li><a href="global.html#getPrio">getPrio</a></li><li><a href="global.html#getRandomColor">getRandomColor</a></li><li><a href="global.html#getRandomRGBColor">getRandomRGBColor</a></li><li><a href="global.html#getTaskPrioBoard">getTaskPrioBoard</a></li><li><a href="global.html#getTasksInProgress">getTasksInProgress</a></li><li><a href="global.html#getTimeOfDay">getTimeOfDay</a></li><li><a href="global.html#getTitle">getTitle</a></li><li><a href="global.html#getTodo">getTodo</a></li><li><a href="global.html#getUpcomingDeadline">getUpcomingDeadline</a></li><li><a href="global.html#getUrgent">getUrgent</a></li><li><a href="global.html#getUsername">getUsername</a></li><li><a href="global.html#guestLogin">guestLogin</a></li><li><a href="global.html#handleDropping">handleDropping</a></li><li><a href="global.html#handleResize">handleResize</a></li><li><a href="global.html#htmlTemplateAllAssignees">htmlTemplateAllAssignees</a></li><li><a href="global.html#htmlTemplateAssigneeIcon">htmlTemplateAssigneeIcon</a></li><li><a href="global.html#htmlTemplateDropContainersDesktop">htmlTemplateDropContainersDesktop</a></li><li><a href="global.html#htmlTemplateDropContainersMobile">htmlTemplateDropContainersMobile</a></li><li><a href="global.html#htmlTemplateMoreThan3Assignees">htmlTemplateMoreThan3Assignees</a></li><li><a href="global.html#htmlTemplateTaskCard">htmlTemplateTaskCard</a></li><li><a href="global.html#htmlTemplateUpTo3Assignees">htmlTemplateUpTo3Assignees</a></li><li><a href="global.html#includeHTML">includeHTML</a></li><li><a href="global.html#initContact">initContact</a></li><li><a href="global.html#initLogin">initLogin</a></li><li><a href="global.html#initSummary">initSummary</a></li><li><a href="global.html#initTask">initTask</a></li><li><a href="global.html#isDraggedElementOverBoardColumn">isDraggedElementOverBoardColumn</a></li><li><a href="global.html#loadContacts">loadContacts</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#openAddContact">openAddContact</a></li><li><a href="global.html#openContactDetails">openContactDetails</a></li><li><a href="global.html#openCreateCategory">openCreateCategory</a></li><li><a href="global.html#openDropDownMenu">openDropDownMenu</a></li><li><a href="global.html#openForgotPw">openForgotPw</a></li><li><a href="global.html#openGapInTaskColumn">openGapInTaskColumn</a></li><li><a href="global.html#openLogin">openLogin</a></li><li><a href="global.html#openMobileGreeting">openMobileGreeting</a></li><li><a href="global.html#openNewContactForm">openNewContactForm</a></li><li><a href="global.html#openRegister">openRegister</a></li><li><a href="global.html#openResetPw">openResetPw</a></li><li><a href="global.html#passwordReset">passwordReset</a></li><li><a href="global.html#priority">priority</a></li><li><a href="global.html#pullDownMenu">pullDownMenu</a></li><li><a href="global.html#pushCategoryInCategorys">pushCategoryInCategorys</a></li><li><a href="global.html#pushStatus">pushStatus</a></li><li><a href="global.html#pushSubtask">pushSubtask</a></li><li><a href="global.html#removeAddClearIcons">removeAddClearIcons</a></li><li><a href="global.html#removeContactColor">removeContactColor</a></li><li><a href="global.html#removeContactsForSubTask">removeContactsForSubTask</a></li><li><a href="global.html#removeHoverEffect">removeHoverEffect</a></li><li><a href="global.html#removeSelectedColor">removeSelectedColor</a></li><li><a href="global.html#removeSelectedPoint">removeSelectedPoint</a></li><li><a href="global.html#removeSubtask">removeSubtask</a></li><li><a href="global.html#renderAllTaskCards">renderAllTaskCards</a></li><li><a href="global.html#renderBoardColumn">renderBoardColumn</a></li><li><a href="global.html#renderCategorys">renderCategorys</a></li><li><a href="global.html#renderContactList">renderContactList</a></li><li><a href="global.html#renderContacts">renderContacts</a></li><li><a href="global.html#renderContactsAfterCreate">renderContactsAfterCreate</a></li><li><a href="global.html#renderFirstLetter">renderFirstLetter</a></li><li><a href="global.html#renderInitials">renderInitials</a></li><li><a href="global.html#renderSubtasks">renderSubtasks</a></li><li><a href="global.html#renderloggedInUserinContactList">renderloggedInUserinContactList</a></li><li><a href="global.html#replaceForbiddenCharacters">replaceForbiddenCharacters</a></li><li><a href="global.html#resetAllGapsInColumns">resetAllGapsInColumns</a></li><li><a href="global.html#resetForm">resetForm</a></li><li><a href="global.html#resetPrioButtom">resetPrioButtom</a></li><li><a href="global.html#resetSubTasks">resetSubTasks</a></li><li><a href="global.html#resetWarnings">resetWarnings</a></li><li><a href="global.html#returnTemplateForDropContainers">returnTemplateForDropContainers</a></li><li><a href="global.html#rotateTaskCard">rotateTaskCard</a></li><li><a href="global.html#saveDatabase">saveDatabase</a></li><li><a href="global.html#saveEditedUser">saveEditedUser</a></li><li><a href="global.html#saveNewCategory">saveNewCategory</a></li><li><a href="global.html#searchContactwithEmail">searchContactwithEmail</a></li><li><a href="global.html#selectCategory">selectCategory</a></li><li><a href="global.html#selectedColor">selectedColor</a></li><li><a href="global.html#selectedForTask">selectedForTask</a></li><li><a href="global.html#sentMailToPhp">sentMailToPhp</a></li><li><a href="global.html#setAttribute">setAttribute</a></li><li><a href="global.html#setItemLocalStorage">setItemLocalStorage</a></li><li><a href="global.html#setOnclickForColorpicker">setOnclickForColorpicker</a></li><li><a href="global.html#setStatus">setStatus</a></li><li><a href="global.html#setTick">setTick</a></li><li><a href="global.html#showAddClearIcons">showAddClearIcons</a></li><li><a href="global.html#showPassword1">showPassword1</a></li><li><a href="global.html#sideMenuColor">sideMenuColor</a></li><li><a href="global.html#signUpUser">signUpUser</a></li><li><a href="global.html#startEventListener">startEventListener</a></li><li><a href="global.html#subtaskEventListener">subtaskEventListener</a></li><li><a href="global.html#switchContactIcons">switchContactIcons</a></li><li><a href="global.html#switchHtml">switchHtml</a></li><li><a href="global.html#switchPasswordPicture">switchPasswordPicture</a></li><li><a href="global.html#switchSubtaskIcons">switchSubtaskIcons</a></li><li><a href="global.html#taskEditorAddSubtask">taskEditorAddSubtask</a></li><li><a href="global.html#taskEditorGetSubtaskStatus">taskEditorGetSubtaskStatus</a></li><li><a href="global.html#taskEditorInitAssigneePicker">taskEditorInitAssigneePicker</a></li><li><a href="global.html#taskEditorRenderData">taskEditorRenderData</a></li><li><a href="global.html#taskEditorRenderInputField">taskEditorRenderInputField</a></li><li><a href="global.html#taskEditorRenderPrioButtons">taskEditorRenderPrioButtons</a></li><li><a href="global.html#taskEditorSaveContacts">taskEditorSaveContacts</a></li><li><a href="global.html#taskEditorSetCheckbox">taskEditorSetCheckbox</a></li><li><a href="global.html#taskEditorSubtaskTemplate">taskEditorSubtaskTemplate</a></li><li><a href="global.html#templateAddContactOverlay">templateAddContactOverlay</a></li><li><a href="global.html#templateContactDetails">templateContactDetails</a></li><li><a href="global.html#templateContactFirstLetters">templateContactFirstLetters</a></li><li><a href="global.html#templateContactList">templateContactList</a></li><li><a href="global.html#templateContactOverlayEdit">templateContactOverlayEdit</a></li><li><a href="global.html#updateContactSelection">updateContactSelection</a></li><li><a href="global.html#userCreatedSuccess">userCreatedSuccess</a></li><li><a href="global.html#validateForm">validateForm</a></li><li><a href="global.html#waitForAnimation">waitForAnimation</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.3</a> on Tue Oct 15 2024 21:40:47 GMT+0200 (Mitteleuropäische Sommerzeit)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

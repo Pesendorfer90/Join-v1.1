@@ -1,7 +1,14 @@
-/*-------------------------------------------------
-html templates
--------------------------------------------------*/
-
+/**
+ * Returns the appropriate HTML template for drop containers based on the window width.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for either desktop or mobile view.
+ *
+ * The function checks the window width. If it's greater than 700 pixels, it returns the
+ * desktop template by calling `htmlTemplateDropContainersDesktop`. Otherwise, it returns
+ * the mobile template by calling `htmlTemplateDropContainersMobile`.
+ */
 function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
     const windowWidth = window.innerWidth;
 
@@ -14,6 +21,18 @@ function returnTemplateForDropContainers(columnId, currentColumnTaskCount) {
         return htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount);
     }
 }
+
+
+/**
+ * Generates the HTML template for drop containers in the desktop view.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for the drop containers.
+ *
+ * The function loops through the tasks in the column, creating containers and drop targets
+ * with specific styles for the first container and target.
+ */
 
 function htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount) {
 
@@ -39,6 +58,16 @@ function htmlTemplateDropContainersDesktop(columnId, currentColumnTaskCount) {
     return html;
 }
 
+/**
+ * Generates the HTML template for drop containers in the mobile view.
+ *
+ * @param {string} columnId - The unique ID of the column.
+ * @param {number} currentColumnTaskCount - The number of tasks in the current column.
+ * @returns {string} - The HTML string for the drop containers.
+ *
+ * The function creates containers and drop targets for each task, with special styling for the
+ * first container. It also appends an extra container at the end with a different height.
+ */
 
 function htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount) {
 
@@ -72,6 +101,17 @@ function htmlTemplateDropContainersMobile(columnId, currentColumnTaskCount) {
 
     return html;
 }
+
+/**
+ * Renders a placeholder in the column if it is empty and no search is active.
+ *
+ * @param {string} id - The unique ID for the placeholder.
+ * @param {HTMLElement} container - The DOM element where the placeholder will be rendered.
+ * @param {boolean} columnEmpty - A flag indicating if the column is empty.
+ * @param {boolean} newBoardSearch - A flag indicating if a new search is active.
+ *
+ * If the column is empty and no search is active, a "No tasks to do" placeholder is added to the column.
+ */
 
 function boardRenderColumnPlaceholder(id, container, columnEmpty, newBoardSearch) {
 
