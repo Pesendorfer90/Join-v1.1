@@ -32,6 +32,7 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100vh;
 }
 
@@ -303,10 +304,22 @@ body {
 
 
 @media(max-width: 900px) {
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .website {
+        justify-content: unset;
+        margin-top: 50px;
+        height: 100%;
+    }
 
     .login-container {
         width: 90%;
         max-width: 600px;
+        margin-bottom: 30px;
     }
 
     .startscreen-mobile {
@@ -322,9 +335,16 @@ body {
         align-items: center;
     }
 
+    .join-pic-container {
+        position: relative;
+        height: calc(23px + 80px);
+        max-width: 600px;
+        width: 90%;
+    }
+
     .join-pic {
-        left: 15%;
-        top: 3%;
+        left: 0;
+        top: 23px;
         height: 80px;
         width: 66px;
         animation: JoinPicAniMobile 800ms linear 0ms 1 normal forwards;
@@ -342,11 +362,8 @@ body {
     }
 
     #signUp {
-        bottom: 7%;
-        width: 100%;
-        justify-content: center;
-        top: auto;
-        right: auto;
+        position: unset;
+        margin-bottom: 30px;
     }
 
     .input-container {
@@ -362,11 +379,6 @@ body {
         gap: 20px;
         margin-top: 10px;
         width: 100%;
-    }
-
-    .login-buttons {
-        flex-direction: column;
-        gap: 10px;
     }
 
     #forgotPwContainer span {
@@ -400,6 +412,10 @@ body {
 }
 
 @media(max-width: 450px) {
+    .login-container {
+        padding: 35px;
+    }
+
     .login-container span {
         font-size: 40px;
     }
@@ -415,11 +431,15 @@ body {
 
 }
 
-@media(max-width: 360px) {
-    .login-container {
-        width: 90%;
+@media(max-width: 400px) {
+        .login-buttons {
+        flex-direction: column;
+        gap: 10px;
     }
+}
 
+
+@media(max-width: 360px) {
     .login-container span {
         font-size: 32px;
     }
@@ -430,15 +450,19 @@ body {
 }
 
 @media(max-height: 750px) {
+    .join-pic-container {
+        height: calc(23px + 60px);
+    }
+
     .join-pic {
         width: 50px;
         height: 60px;
     }
 }
 
-@media(max-height: 700px) {
+/* @media(max-height: 700px) {
     button {
         font-size: 14px !important;
         height: 40px !important;
     }
-}
+} */

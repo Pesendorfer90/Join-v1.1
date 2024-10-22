@@ -23,7 +23,6 @@ body {
     padding: 30px 60px 20px 60px;
     width: calc(100vw - 320px);
     max-width: 1400px;
-    overflow: auto;
     height: calc(100% - 50px)
 }
 
@@ -802,6 +801,12 @@ Responsive Design
         padding: 0;
     }
 
+    #board {
+        width: calc(100% - 120px);
+        height: calc(100% - 30px);
+        padding: 30px 60px 0 60px;
+    }
+
     #board-detail-view {
         width: 100%;
         padding: 20px 50px;
@@ -903,13 +908,6 @@ Responsive Design
 }
 
 @media (max-width: 500px) {
-
-    #board {
-        width: calc(100% - 30px);
-        padding: 30px 15px 0 15px;
-        overflow-y: scroll;
-    }
-
     .board-kanban-column {
         margin: 0px;
     }
@@ -941,5 +939,14 @@ Responsive Design
 
     #board-add-task {
         padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    
+    #board {
+        width: calc(100% - 60px);
+        height: calc(100% - 30px);
+        padding: 30px 30px 0 30px;
     }
 }

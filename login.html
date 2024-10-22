@@ -24,13 +24,14 @@
 <body onload="initLogin()">
 
     <div id="mobileStartScreen" class="startscreen-mobile"><img src="assets/img/join_small.png" alt=""></div>
-
-    <img id="joinPic" class="join-pic" src="assets/img/Join_dark.png">
-
+    <div class="join-pic-container">
+        <img id="joinPic" class="join-pic" src="assets/img/Join_dark.png">
+    </div>
     <div class="website">
 
 
-        <form onsubmit="checkLogin(); return false; disableButton('logInButton')" id="loginContainer" class="login-container d-none">
+        <form onsubmit="checkLogin(); return false; disableButton('logInButton')" id="loginContainer"
+            class="login-container d-none">
             <span>Log in</span>
             <div class="blue-line"></div>
             <div class="input-container">
@@ -38,7 +39,8 @@
                 <img src="assets/img/mail.png" alt="">
             </div>
             <div id="passwordContainer" class="input-container">
-                <input onkeyup="switchPasswordPicture()" required id="password" type="current-password" placeholder="Password">
+                <input onkeyup="switchPasswordPicture()" required id="password" type="current-password"
+                    placeholder="Password">
                 <img id="lock" src="assets/img/lock.png" alt="">
                 <img onclick="showPassword1()" id="hidePassword" class="d-none" src="assets/img/hide_password.png"
                     alt="">
@@ -56,17 +58,21 @@
             </div>
             <div class="login-buttons">
                 <button id="logInButton" class="button-dark">Log in</button>
-                <button id="guestLogInButton" onclick="guestLogin(); disableButton('guestLogInButton')" class="button-light">Guest Log in</button>
+                <button id="guestLogInButton" onclick="guestLogin(); disableButton('guestLogInButton')"
+                    class="button-light">Guest Log in</button>
             </div>
         </form>
 
 
-        <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer" class="login-container d-none">
+        <form onsubmit="accountData(); return false; disableButton('signUpButton')" id="signUpContainer"
+            class="login-container d-none">
             <img onclick="openLogin()" class="blue-arrow" src="assets/img/blue-arrow-left.png" alt="">
             <span>Sign up</span>
             <div class="blue-line"></div>
             <div class="input-container">
-                <input required id="username" type="text" placeholder="Name">
+                <input required id="username" type="text" placeholder="Name"
+                pattern="^[A-Za-zÄäÖöÜüß]+\s[A-Za-zÄäÖöÜüß]+$"
+                title="Please enter your first and last name, separated by a space." >
                 <img src="assets/img/user-line.png" alt="">
             </div>
             <div class="input-container">
@@ -81,7 +87,8 @@
         </form>
 
 
-        <form onsubmit="emailSent(); return false; disableButton('sendMailButton')" id="forgotPwContainer" class="login-container d-none">
+        <form onsubmit="emailSent(); return false; disableButton('sendMailButton')" id="forgotPwContainer"
+            class="login-container d-none">
             <img onclick="openLogin()" class="blue-arrow" src="assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">I forgot my password</span>
             <div class="blue-line"></div>
@@ -95,7 +102,8 @@
         </form>
 
 
-        <form onsubmit="passwordReset(); return false; disableButton('continueButton')" id="resetPwContainer" class="login-container d-none">
+        <form onsubmit="passwordReset(); return false; disableButton('continueButton')" id="resetPwContainer"
+            class="login-container d-none">
             <img onclick="openForgotPw()" class="blue-arrow" src="assets/img/blue-arrow-left.png" alt="">
             <span class="padding-left-right-40px">Reset your password</span>
             <div class="blue-line"></div>
@@ -104,16 +112,18 @@
                 <input required id="newPassword" type="new-password" placeholder="New Password">
             </div>
             <div id="confirmedPasswordContainer" class="input-container">
-                <input required id="confirmedPassword" type="new-password"
-                    placeholder="Confirm Password">
+                <input required id="confirmedPassword" type="new-password" placeholder="Confirm Password">
             </div>
             <div id="passwordDontMatch">Your Passwords don´t match. Try again</div>
             <button id="continueButton" class="button-dark margin-top-20px width-180px">Continue</button>
         </form>
+        <div class="d-none" id="signUp">Not a Join user? <button onclick="openRegister()"
+                class="button-dark mob-width-100px">Sign
+                up</button></div>
     </div>
-    <div class="d-none" id="signUp">Not a Join user? <button onclick="openRegister()"
+    <!-- <div class="d-none" id="signUp">Not a Join user? <button onclick="openRegister()"
             class="button-dark mob-width-100px">Sign
-            up</button></div>
+            up</button></div> -->
     <div id="emailSent" class="d-none">
         <img src="assets/img/SendCheck.png" alt="">
         An E-Mail has been sent to you

@@ -128,6 +128,7 @@ function boardShowTaskDetails(i) {
     document.getElementById('board-detail-view').classList.remove('board-display-none');
     boardCurrentTaskInDetailView = i;
     document.getElementById('board-kanban').classList.add('board-display-none-700px');
+    resetScroll('board-detail-view');
 }
 
 /**

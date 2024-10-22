@@ -287,7 +287,7 @@ function searchContactInfo(index, yoursearchResult, keyword, searchFilter, searc
  * the item clicked, or other properties of the event.
  */
 window.onclick = function (e) {
-    if (window.location.pathname !== '/login.html') {
+    if (!window.location.pathname.endsWith('/login.html')) {
         if (!e.target.matches('.user-menu', '.user-initials', '#navID') &&
             !document.getElementById('userMenu').classList.contains('d-none')) {
             document.getElementById('userMenu').classList.add('d-none');

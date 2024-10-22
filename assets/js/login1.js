@@ -214,7 +214,7 @@ function signUpUser(account, contact) {
     clearSignUpInput();
     setTimeout(() => {
         openLogin();
-    }, 500);
+    }, 1000);
     alert("Account has been created");
 }
 
@@ -331,7 +331,7 @@ function getUsername(forgotPwEmail) {
  * @returns It returns the Link which includes the email to reset the password
  */
 function getForgotPwLink(forgotPwEmail) {
-    let url = 'https://gruppe-596.developerakademie.net/join/login.html?email=' + encodeURIComponent(forgotPwEmail);
+    let url = 'https://gerald-pesendorfer.at/join/login.html?email=' + encodeURIComponent(forgotPwEmail);
     return url;
 }
 
@@ -371,7 +371,8 @@ function activatePhp() { //Php skript wird ausgeführt
             console.log(this.responseText);
         }
     };
-    xmlhttp.open("GET", "send_mail.php", true);
+    // xmlhttp.open("GET", "send_mail.php", true);
+    xmlhttp.open("POST", "send_mail.php", true);
     xmlhttp.send();
 }
 

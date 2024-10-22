@@ -66,11 +66,9 @@ function boardCreateEventListenerMouse(boardDragElement, i) {
         pos3 = e.clientX;
         pos4 = e.clientY;
         changeHeight();
-        changeScroll(true);
 
         document.onmouseup = function () {
             handleDropping(i);
-            changeScroll(false);
         }
 
         document.onmousemove = function (e) {
@@ -107,7 +105,6 @@ function boardCreateEventListenerTouch(boardDragElement, i) {
         pos3 = e.clientX;
         pos4 = e.clientY;
         changeHeight();
-        changeScroll(true);
         document.addEventListener('touchend', handleEnd);
         document.addEventListener('touchmove', handleMove, { passive: false });
 
@@ -115,7 +112,6 @@ function boardCreateEventListenerTouch(boardDragElement, i) {
             document.removeEventListener('touchend', handleEnd);
             document.removeEventListener('touchmove', handleMove);
             handleDropping(i);
-            changeScroll(false);
         }
 
         function handleMove(e) {
@@ -583,21 +579,4 @@ function changeHeight() {
     divs.forEach(function (container) {
         container.style.height = '260px';
     });
-}
-
-/**
- * Toggles the scroll behavior of the board based on the `hidde` flag.
- *
- * @param {boolean} hidde - A flag indicating whether to add or remove the scroll class.
- *
- * If `hidde` is true, the function adds the 'board-overlay-scroll' class to the board element,
- * enabling scroll; otherwise, it removes the class, disabling scroll.
- */
-function changeScroll(hidde) {
-    let board = document.getElementById('board');
-    if (hidde) {
-        board.classList.add('board-overlay-scroll');
-    } else {
-        board.classList.remove('board-overlay-scroll');
-    }
 }

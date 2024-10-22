@@ -17,6 +17,7 @@ function boardShowAddtaskOverlay(progress) {
     document.getElementById('board-add-task').parentNode.classList.remove('board-display-none');
     document.getElementById('board-kanban').classList.add('board-display-none-700px');
     document.getElementById('contentAlignment').classList.add('board-overflow');
+    resetScroll('board-add-task');
 }
 
 /**
@@ -50,6 +51,7 @@ function boardShowTaskEditor() {
     boardRenderSubtasks(task.subtasks, 'addetSubtasks');
     document.getElementById('board-detail-view').classList.add('board-display-none');
     document.getElementById('board-task-editor').classList.remove('board-display-none');
+    resetScroll('board-task-editor');
 }
 
 /**
@@ -421,4 +423,9 @@ function boardTemplateAssigneePicker() {
         </div>
         <div class="task-initials-container" id="initialsContainer"></div>
     `;
+}
+
+function resetScroll(id) {
+    const overlay = document.getElementById(id);
+    overlay.scrollTop = 0;
 }
